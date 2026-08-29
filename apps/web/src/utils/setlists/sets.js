@@ -7,7 +7,7 @@ import {
   duplicateSetData,
 } from '@gracechords/core/setlists/setStore'
 
-const STORAGE_KEY = 'gracechords.sets.v1'
+const STORAGE_KEY = 'atril.sets.v1'
 
 function readStore() {
   try {

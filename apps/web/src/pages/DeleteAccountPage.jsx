@@ -19,8 +19,8 @@ export default function DeleteAccountPage() {
   return (
     <div className="container gc-post-detail">
       <Helmet>
-        <title>Delete Your Account · GraceChords</title>
-        <meta name="description" content="How to delete your GraceChords account and the data that is removed." />
+        <title>Delete Your Account · Atril</title>
+        <meta name="description" content="How to delete your Atril account and the data that is removed." />
       </Helmet>
       <div
         className="gc-post-detail__content gc-prose"

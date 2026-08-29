@@ -2,7 +2,7 @@
   "_meta": { "reviewer": "", "reviewedAt": "" },
   "posts": {
     "title": "Posts",
-    "subtitle": "News, announcements and worship resources",
+    "subtitle": "News, announcements and band updates",
     "refresh": "Refresh",
     "refreshAria": "Refresh posts",
     "updated": "Updated {{time}}",
@@ -53,9 +53,9 @@
     "pptZip": "PPT ZIP",
     "pptZipTooltip": "Export PPTX bundle (ZIP) for selected songs",
     "pptZipDisabled": "Add songs to export PPTX bundle",
-    "worshipMode": "Worship Mode",
-    "worshipModeShort": "Worship",
-    "worshipModeTooltip": "Open Worship Mode",
+    "presentationMode": "Presentation Mode",
+    "presentationModeShort": "Present",
+    "presentationModeTooltip": "Open Presentation Mode",
     "moreActions": "More actions",
     "actionsTitle": "Setlist actions",
     "savedSetsAction": "Saved Sets",
@@ -102,13 +102,6 @@
     "fieldOptional": "(optional)",
     "cancel": "Cancel",
     "update": "Update",
-    "addVerseTitle": "Add Verse",
-    "bibleVerse": "Bible verse",
-    "translation": "Translation",
-    "versePlaceholder": "John 3:16",
-    "checkVerse": "Please check verse reference.",
-    "translationAria": "Choose Bible translation",
-    "noVerseFound": "No verse found.",
     "linkCopied": "Link copied!",
     "failedCopy": "Failed to copy link",
     "signInToSaveToast": "Sign in to save setlists.",
@@ -131,8 +124,6 @@
     "combining": "Combining…",
     "pptUnavailable": "{{title}} PPT file unavailable",
     "songsMissingPpt": "{{count}} songs missing PPT files",
-    "noVersesFound": "No verses found for {{ref}}",
-    "failedLoadVerse": "Failed to load {{ref}}",
     "failedProcess": "Failed to process {{title}}"
   },
   "songbook": {
@@ -187,13 +178,13 @@
     "translationAria": "Choose Bible translation"
   },
   "download": {
-    "metaTitle": "Download the App | GraceChords",
-    "metaDescription": "Get GraceChords on your phone — chord charts, setlists, and the Daily Word, wherever you lead worship.",
-    "title": "Download GraceChords",
+    "metaTitle": "Download the App | Atril",
+    "metaDescription": "Get Atril on your phone — chord charts, setlists, and the Daily Word, wherever you lead worship.",
+    "title": "Download Atril",
     "lede": "Take your chord charts, setlists, and the Daily Word with you. Everything syncs with the account you already use on the web.",
     "ios": {
       "title": "iPhone & iPad",
-      "body": "GraceChords is available now on the App Store.",
+      "body": "Atril is available now on the App Store.",
       "badgeAlt": "Download on the App Store"
     },
     "android": {
@@ -204,7 +195,7 @@
     "qr": {
       "title": "Scan to open on your phone",
       "body": "Point your camera at the code to open this page on your device.",
-      "alt": "QR code linking to gracechords.com/download"
+      "alt": "QR code linking to atril.com/download"
     }
   }
 }

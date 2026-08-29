@@ -141,7 +141,7 @@ export default function Songbook() {
       }
       return
     }
-    if (key === 'graceChordsSongbook'){
+    if (key === 'atrilSongbook'){
       const sorted = all.slice().sort(byTitle)
       setSelectedIds(toIds(sorted))
     }

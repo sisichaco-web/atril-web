@@ -197,7 +197,7 @@ export default function SessionViewer() {
         <div style={CENTER}>
           <h1 style={{ fontSize: 22, marginBottom: 8 }}>Session not found</h1>
           <p style={{ opacity: 0.7, marginBottom: 16 }}>This session may have ended or the link is incorrect.</p>
-          <Link to="/" style={LINK}>Go to GraceChords</Link>
+          <Link to="/" style={LINK}>Go to Atril</Link>
         </div>
       </div>
     )
@@ -308,7 +308,7 @@ export default function SessionViewer() {
 }
 
 // --- Inline styles (self-contained; the follower is a standalone full-screen
-// route with no NavBar, like Worship Mode). ---
+// route with no NavBar, like Live Mode). ---
 const SHELL = {
   position: 'fixed', inset: 0, display: 'flex', flexDirection: 'column',
   background: 'var(--gc-bg, #fff)', color: 'var(--gc-text, #111)',

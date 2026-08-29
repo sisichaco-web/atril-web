@@ -2,7 +2,7 @@
   "_meta": { "reviewer": "", "reviewedAt": "", "needsReview": true },
   "posts": {
     "title": "Yazılar",
-    "subtitle": "Haberler, duyurular ve ibadet kaynakları",
+    "subtitle": "Haberler, duyurular ve grup gelişmeleri",
     "refresh": "Yenile",
     "refreshAria": "Yazıları yenile",
     "updated": "Güncellendi {{time}}",
@@ -53,9 +53,9 @@
     "pptZip": "PPT ZIP",
     "pptZipTooltip": "Seçili ilahiler için PPTX paketi (ZIP) dışa aktar",
     "pptZipDisabled": "PPTX paketini dışa aktarmak için ilahi ekleyin",
-    "worshipMode": "İbadet Modu",
-    "worshipModeShort": "İbadet",
-    "worshipModeTooltip": "İbadet Modunu aç",
+    "presentationMode": "Sunum Modu",
+    "presentationModeShort": "Sunum",
+    "presentationModeTooltip": "Sunum Modunu aç",
     "moreActions": "Daha fazla işlem",
     "actionsTitle": "Set listesi işlemleri",
     "savedSetsAction": "Kayıtlı Setler",
@@ -102,13 +102,6 @@
     "fieldOptional": "(isteğe bağlı)",
     "cancel": "İptal",
     "update": "Güncelle",
-    "addVerseTitle": "Ayet Ekle",
-    "bibleVerse": "İncil ayeti",
-    "translation": "Çeviri",
-    "versePlaceholder": "Yuhanna 3:16",
-    "checkVerse": "Lütfen ayet referansını kontrol edin.",
-    "translationAria": "İncil çevirisi seç",
-    "noVerseFound": "Ayet bulunamadı.",
     "linkCopied": "Bağlantı kopyalandı!",
     "failedCopy": "Bağlantı kopyalanamadı",
     "signInToSaveToast": "Set listelerini kaydetmek için oturum açın.",
@@ -131,8 +124,6 @@
     "combining": "Birleştiriliyor…",
     "pptUnavailable": "{{title}} PPT dosyası yok",
     "songsMissingPpt": "{{count}} ilahide PPT dosyası eksik",
-    "noVersesFound": "{{ref}} için ayet bulunamadı",
-    "failedLoadVerse": "{{ref}} yüklenemedi",
     "failedProcess": "{{title}} işlenemedi"
   },
   "songbook": {
@@ -187,13 +178,13 @@
     "translationAria": "İncil çevirisi seç"
   },
   "download": {
-    "metaTitle": "Uygulamayı indir | GraceChords",
-    "metaDescription": "GraceChords'u telefonunuza alın: akorlu ilahiler, set listeleri ve Kutsal Kitap, ibadeti yönettiğiniz her yerde.",
-    "title": "GraceChords'u indirin",
+    "metaTitle": "Uygulamayı indir | Atril",
+    "metaDescription": "Atril'u telefonunuza alın: akorlu ilahiler, set listeleri ve Kutsal Kitap, ibadeti yönettiğiniz her yerde.",
+    "title": "Atril'u indirin",
     "lede": "Akorlu ilahilerinizi, set listelerinizi ve Kutsal Kitap'ı yanınızda taşıyın. Her şey web'de kullandığınız hesapla eşitlenir.",
     "ios": {
       "title": "iPhone ve iPad",
-      "body": "GraceChords şu anda App Store'da mevcut.",
+      "body": "Atril şu anda App Store'da mevcut.",
       "badgeAlt": "App Store'dan indirin"
     },
     "android": {
@@ -204,7 +195,7 @@
     "qr": {
       "title": "Telefonunuzda açmak için tarayın",
       "body": "Bu sayfayı cihazınızda açmak için kameranızı koda doğrultun.",
-      "alt": "gracechords.com/download adresine bağlanan QR kodu"
+      "alt": "atril.com/download adresine bağlanan QR kodu"
     }
   }
 }

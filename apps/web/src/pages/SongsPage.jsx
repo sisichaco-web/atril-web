@@ -21,10 +21,10 @@ import {
   writeSongLanguagePreference,
 } from '../utils/songs/songCatalog'
 
-const SITE_URL = 'https://gracechords.com'
+const SITE_URL = 'https://atril.com'
 const OG_IMAGE_URL = `${SITE_URL}/favicon.ico`
-const SONGS_TITLE = 'Browse Songs — Free Worship Chord Sheets & Lyrics | GraceChords'
-const SONGS_DESCRIPTION = 'Browse free worship chord sheets and lyrics for churches, worship teams, and believers. Build setlists and access transposable charts at GraceChords.'
+const SONGS_TITLE = 'Browse Songs — Free Worship Chord Sheets & Lyrics | Atril'
+const SONGS_DESCRIPTION = 'Browse free worship chord sheets and lyrics for músicos y bandas. Build setlists and access transposable charts at Atril.'
 
 // Personal/Pending pill shown on a library card for the user's own drafts.
 function personalBadge(s) {
@@ -388,12 +388,12 @@ export default function Songs(){
       <Helmet>
         <title>{SONGS_TITLE}</title>
         <meta name="description" content={SONGS_DESCRIPTION} />
-        <meta name="keywords" content="worship chord sheets, worship lyrics, transposable charts, GraceChords" />
+        <meta name="keywords" content="worship chord sheets, worship lyrics, transposable charts, Atril" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content={SONGS_TITLE} />
         <meta property="og:description" content={SONGS_DESCRIPTION} />
         <meta property="og:url" content={`${SITE_URL}/songs`} />
-        <meta property="og:site_name" content="GraceChords" />
+        <meta property="og:site_name" content="Atril" />
         <meta property="og:image" content={OG_IMAGE_URL} />
         <link rel="canonical" href={`${SITE_URL}/songs`} />
       </Helmet>

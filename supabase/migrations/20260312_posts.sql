@@ -24,12 +24,14 @@ create index if not exists posts_published_at_idx on public.posts(published_at d
 alter table public.posts enable row level security;
 
 -- Anyone can read published posts
+drop policy if exists "Public can read published posts" on posts;
 create policy "Public can read published posts"
   on posts for select
   using (status = 'published');
 
 -- Editors and above can read all posts (including drafts)
 -- NOTE: uses `role` column on public.users (NOT global_role)
+drop policy if exists "Editors can read all posts" on posts;
 create policy "Editors can read all posts"
   on posts for select
   using (
@@ -41,6 +43,7 @@ create policy "Editors can read all posts"
   );
 
 -- Editors and above can insert
+drop policy if exists "Editors can insert posts" on posts;
 create policy "Editors can insert posts"
   on posts for insert
   with check (
@@ -52,6 +55,7 @@ create policy "Editors can insert posts"
   );
 
 -- Editors and above can update
+drop policy if exists "Editors can update posts" on posts;
 create policy "Editors can update posts"
   on posts for update
   using (
@@ -63,6 +67,7 @@ create policy "Editors can update posts"
   );
 
 -- Only admins/owners can delete
+drop policy if exists "Admins can delete posts" on posts;
 create policy "Admins can delete posts"
   on posts for delete
   using (

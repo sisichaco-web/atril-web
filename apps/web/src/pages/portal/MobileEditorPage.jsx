@@ -19,11 +19,11 @@ const BLANK_FORM = {
   title: '',
   artist: '',
   default_key: '',
-  tempo: '',
-  time_signature: '',
-  country: '',
+  tempo: 120,
+  time_signature: '4/4',
+  country: 'Arg',
   youtube_id: '',
-  language: '',
+  language: 'Spanish',
   pptx_url: '',
   tags: [],
   chordpro_content: '',
@@ -281,7 +281,7 @@ export default function MobileEditorPage() {
   return (
     <div className="gc-me">
       <Helmet>
-        <title>{song ? `Edit: ${song.title}` : 'New Song'} – GraceChords</title>
+        <title>{song ? `Edit: ${song.title}` : 'New Song'} – Atril</title>
       </Helmet>
 
       {/* Header */}

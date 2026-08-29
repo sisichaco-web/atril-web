@@ -10,7 +10,7 @@ export default function EditorPage() {
 
   return (
     <div className="gc-portal-page container">
-      <Helmet><title>Editor Portal – GraceChords</title></Helmet>
+      <Helmet><title>Editor Portal – Atril</title></Helmet>
 
       <h1>Editor Portal</h1>
       <p className="gc-portal-page__subtitle">

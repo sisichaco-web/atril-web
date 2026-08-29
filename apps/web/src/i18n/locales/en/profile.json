@@ -2,6 +2,6 @@
   "_meta": { "reviewer": "", "reviewedAt": "" },
   "preferences": "Preferences",
   "uiLanguage": "Display language",
-  "uiLanguageHelper": "Changes the language used for the GraceChords interface.",
+  "uiLanguageHelper": "Changes the language used for the Atril interface.",
   "saveFailed": "Failed to save profile."
 }

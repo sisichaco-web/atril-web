@@ -1,4 +1,4 @@
-# GraceChords Glossary — `ko`
+# Atril Glossary — `ko`
 
 Locked-in terminology and convention decisions for the Korean locale. Future revisions and translators should follow these unless Ryan explicitly changes them.
 
@@ -10,8 +10,8 @@ Locked-in terminology and convention decisions for the Korean locale. Future rev
 
 | English | Korean | Note |
 |---|---|---|
-| GraceChords | GraceChords | Brand — never translate |
-| Worship Mode | 예배 모드 | |
+| Atril | Atril | Brand — never translate |
+| Live Mode | 예배 모드 | |
 | Song of the Day | 오늘의 찬양 | |
 | Daily Word | 오늘의 말씀 | **Kept as native term** — unlike Turkish (where literal failed). 오늘의 말씀 is the established Korean Protestant phrase for daily devotional. Do **not** change to 성경. |
 | Quiet Time | 큐티 | Universally established loanword in Korean evangelical churches |
@@ -21,7 +21,7 @@ Locked-in terminology and convention decisions for the Korean locale. Future rev
 | Random Theme Set | 랜덤 주제 셋리스트 | |
 | Random 10-Song Collection | 랜덤 10곡 모음 | 모음 (collection) for "Collection" terms; 셋리스트 for "Set" terms |
 | "Send Me" Songbook | "나를 보내소서" 송북 | -소서 honorific is the standard Korean Bible rendering of Isaiah 6:8 |
-| GraceChords Songbook | GraceChords 송북 | |
+| Atril Songbook | Atril 송북 | |
 | Contribute | 기여하기 | Not 참여하기 (which means "participate") |
 | Song Library | 찬양곡 라이브러리 | |
 | Setlist Builder | 셋리스트 빌더 | |

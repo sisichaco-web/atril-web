@@ -7,7 +7,7 @@ import StarButton from '../components/song/StarButton'
 import { Helmet } from 'react-helmet-async'
 import { stepsBetween, transposeSymPrefer } from '../utils/chordpro'
 import { formatChord, formatKeyDisplay } from '../utils/chordpro/solfege'
-import { useChordStyle } from '../hooks/useSettings'
+import { useChordStyle, useInstrumentProfile, INSTRUMENT_OFFSETS } from '../hooks/useSettings'
 import { appendDisclaimerIfMissing } from '../utils/chordpro/disclaimer'
 import KeySelector from '../components/KeySelector'
 import { transposeInstrumental, formatInstrumental } from '../utils/songs/instrumental'
@@ -21,6 +21,7 @@ import { showToast } from '../utils/app/toast'
 import { headOk, clearHeadCache } from '../utils/network/headCache'
 import { smartPreviewAndShareJPG } from '../utils/media/smartPreviewAndShareJPG'
 import Busy from '../components/Busy'
+import SongNote from '../components/song/SongNote'
 import { publicUrl } from '../utils/network/publicUrl'
 import { Button, Card, Chip, IconButton, PageHeader, Toolbar } from '../components/ui/layout-kit'
 import MobileActionSheet from '../components/ui/mobile/MobileActionSheet'
@@ -40,7 +41,7 @@ import { filterDisplayTags } from '../utils/songs/tags'
 let pdfLibPromise
 let imageLibPromise
 
-const SITE_URL = 'https://gracechords.com'
+const SITE_URL = 'https://atril.com'
 const OG_IMAGE_URL = `${SITE_URL}/favicon.ico`
 
 function buildSongSeo(entry, parsed, id){
@@ -48,10 +49,10 @@ function buildSongSeo(entry, parsed, id){
   const routeSlug = entry?.id || id || slugFromFile || 'song'
   const titleRaw = (parsed?.meta?.title || entry?.title || routeSlug || 'Song') || 'Song'
   const title = String(titleRaw).trim() || 'Song'
-  const pageTitle = `${title} – Chord Sheet & Lyrics | GraceChords`
+  const pageTitle = `${title} – Chord Sheet & Lyrics | Atril`
   const tags = Array.isArray(entry?.tags) ? entry.tags : []
   const isIcpSong = tags.some(t => (String(t || '')).toLowerCase() === 'icp')
-  const descriptionBase = `Free worship chord sheet and lyrics for "${title}". Transposable, printable, and formatted for worship teams at GraceChords.`
+  const descriptionBase = `Free worship chord sheet and lyrics for "${title}". Transposable, printable, and formatted for worship teams at Atril.`
   const description = isIcpSong
     ? `${descriptionBase} Frequently used in InterCP International (ICP) worship and missions contexts.`
     : descriptionBase
@@ -59,7 +60,7 @@ function buildSongSeo(entry, parsed, id){
     `${title} chords`,
     `${title} lyrics`,
     'worship chord chart',
-    'GraceChords'
+    'Atril'
   ]
   if (isIcpSong) {
     keywordParts.push(
@@ -82,7 +83,7 @@ function buildSongSeo(entry, parsed, id){
     inLanguage: entry?.language || 'en',
     url,
     isFamilyFriendly: true,
-    publisher: 'GraceChords'
+    publisher: 'Atril'
   }
   if (names) {
     ld.lyricist = names
@@ -106,6 +107,10 @@ export default function SongView(){
   const personalParam = searchParams.get('p')
   const { songs } = useSongs()
   const chordStyle = useChordStyle()
+  const instrumentProfile = useInstrumentProfile()
+  // Offset por instrumento: se suma ANTES de la transposición manual del usuario.
+  // Concert=0, Bb=+2, Eb=+9 (ver INSTRUMENT_OFFSETS en useSettings)
+  const instrumentOffset = INSTRUMENT_OFFSETS[instrumentProfile] ?? 0
   const SONG_CATALOG = useMemo(() => buildSongCatalog(songs), [songs])
   const catalogEntry = useMemo(() => getEntryById(SONG_CATALOG, id), [SONG_CATALOG, id])
 
@@ -326,7 +331,7 @@ export default function SongView(){
       <meta name="description" content={songSeo.description} />
       {songSeo.keywords ? <meta name="keywords" content={songSeo.keywords} /> : null}
       <meta property="og:type" content="website" />
-      <meta property="og:site_name" content="GraceChords" />
+      <meta property="og:site_name" content="Atril" />
       <meta property="og:title" content={songSeo.pageTitle} />
       <meta property="og:description" content={songSeo.description} />
       <meta property="og:url" content={songSeo.url} />
@@ -373,7 +378,8 @@ export default function SongView(){
 
   const slug = entry.filename.replace(/\.chordpro$/, '')
   const title = parsed?.meta?.title || entry.title || slug
-  const steps = stepsBetween(baseKey, toKey)
+  // totalSteps = offset de instrumento + transposición manual del usuario
+  const steps = (stepsBetween(baseKey, toKey) + instrumentOffset) % 12
   const baseRootRaw = (String(baseKey).match(/^([A-G][#b]?)/) || [,''])[1]
   const preferFlat = !!(baseRootRaw && /b$/.test(baseRootRaw))
 
@@ -614,9 +620,9 @@ export default function SongView(){
           as={Link}
           to={`/worship/${entry.id}?toKey=${encodeURIComponent(toKey)}`}
           leftIcon={<MediaIcon />}
-          title={t('worshipMode')}
+          title={t('presentationMode')}
         >
-          {t('worshipMode')}
+          {t('presentationMode')}
         </Button>
         </>)}
         {entry?.dbId ? (
@@ -646,31 +652,34 @@ export default function SongView(){
       <Busy busy={busy} />
       <PageHeader
         title={
-          <div className="gc-song-title-row">
-            <span>{title}</span>
-            {translationLanguages.length > 1 ? (
-              <span className="gc-song-language-chips" aria-label="Song language">
-                {translationLanguages.map((code) => (
-                  <Chip
-                    key={code}
-                    variant="filter"
-                    selected={entry?.language === code}
-                    onClick={() => handleLanguageSelect(code)}
-                    title={`Switch to ${getLanguageChipLabel(code)}`}
-                  >
-                    {getLanguageChipLabel(code)}
-                  </Chip>
-                ))}
-              </span>
-            ) : null}
-            {isPersonal ? (
-              <span className="gc-tag gc-tag--gray">
-                {entry.reviewStatus === 'submitted' ? 'Pending review' : 'Personal draft'}
-              </span>
-            ) : (
-              <StarButton songId={entry?.dbId} />
-            )}
-          </div>
+          <>
+            <div className="gc-song-title-row">
+              <span>{title}</span>
+              {translationLanguages.length > 1 ? (
+                <span className="gc-song-language-chips" aria-label="Song language">
+                  {translationLanguages.map((code) => (
+                    <Chip
+                      key={code}
+                      variant="filter"
+                      selected={entry?.language === code}
+                      onClick={() => handleLanguageSelect(code)}
+                      title={`Switch to ${getLanguageChipLabel(code)}`}
+                    >
+                      {getLanguageChipLabel(code)}
+                    </Chip>
+                  ))}
+                </span>
+              ) : null}
+              {isPersonal ? (
+                <span className="gc-tag gc-tag--gray">
+                  {entry.reviewStatus === 'submitted' ? 'Pending review' : 'Personal draft'}
+                </span>
+              ) : (
+                <StarButton songId={entry?.dbId} />
+              )}
+            </div>
+            <SongNote songId={entry?.id || id} />
+          </>
         }
         subtitle={`Key: ${baseKey}${parsed?.meta?.capo ? ` • Capo: ${parsed.meta.capo}` : ''}`}
       >
@@ -763,7 +772,7 @@ export default function SongView(){
           <IconButton label={t('toggleChords')} onClick={()=> setShowChords(v=>!v)} title={t('toggleChords')}><EyeIcon /></IconButton>
           {!isPersonal && (<>
             <Button variant="primary" iconOnly leftIcon={<DownloadIcon />} onClick={() => setMobileActionsOpen(true)} title="Download" aria-label="Download">Download</Button>
-            <Button variant="primary" iconOnly as={Link} to={`/worship/${entry.id}?toKey=${encodeURIComponent(toKey)}`} leftIcon={<MediaIcon />} title="Worship Mode" aria-label="Worship Mode">Worship</Button>
+            <Button variant="primary" iconOnly as={Link} to={`/worship/${entry.id}?toKey=${encodeURIComponent(toKey)}`} leftIcon={<MediaIcon />} title="Live Mode" aria-label="Live Mode">Worship</Button>
           </>)}
           {entry?.dbId ? (
             <PushToTelegramButton

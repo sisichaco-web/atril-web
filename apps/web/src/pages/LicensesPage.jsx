@@ -13,7 +13,7 @@ import '../styles/posts.css'
 // .gc-prose pipeline as the Privacy/Terms pages.
 const PREAMBLE = `# Acknowledgements & Licenses
 
-GraceChords is free, non-commercial worship software. This page lists the
+Atril is free, non-commercial worship software. This page lists the
 third-party open-source components it is built with, along with attribution for
 the Scripture texts it uses.
 
@@ -32,10 +32,10 @@ export default function LicensesPage() {
   return (
     <div className="container gc-post-detail">
       <Helmet>
-        <title>Acknowledgements &amp; Licenses · GraceChords</title>
+        <title>Acknowledgements &amp; Licenses · Atril</title>
         <meta
           name="description"
-          content="Open-source components and Scripture attributions used by GraceChords."
+          content="Open-source components and Scripture attributions used by Atril."
         />
       </Helmet>
       <div

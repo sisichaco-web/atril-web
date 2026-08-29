@@ -22,20 +22,9 @@ export interface Announcement {
   endsAt: string
 }
 
-export const announcements: Announcement[] = [
-  {
-    id: 'ios-launch-2026-08',
-    // iOS is included even though iOS Safari never shows the strip: the
-    // suppression there is isNativeAppBannerActive(), a client concern, not an
-    // audience one. Chrome/Firefox/webviews on iOS get no native banner and do
-    // need the strip.
-    platforms: ['desktop', 'android', 'ios'],
-    messageKey: 'announcement.iosLaunch.message',
-    cta: { labelKey: 'announcement.iosLaunch.cta', href: '/download' },
-    startsAt: '2026-08-07T00:00:00Z',
-    endsAt: '2026-09-30T23:59:59Z',
-  },
-]
+// No active campaigns. The PWA remains installable through the browser's
+// native install controls; this strip should not advertise a native app store.
+export const announcements: Announcement[] = []
 
 export const DISMISS_KEY_PREFIX = 'announce:dismissed:'
 

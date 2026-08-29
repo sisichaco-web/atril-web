@@ -1,6 +1,6 @@
 {
   "_meta": { "reviewer": "Ryan", "reviewedAt": "5/3/26", "needsReview": false },
-  "welcomeTitle": "GraceChords'a hoş geldiniz",
+  "welcomeTitle": "Atril'a hoş geldiniz",
   "welcomeSubtitle": "Kiliseler ve ibadet edenler için ücretsiz, açık kaynaklı tapınma araçları.",
   "searchLabel": "İlahileri ara",
   "searchPlaceholder": "Başlık, etiket veya yazara göre ara…",
@@ -22,7 +22,7 @@
     "randomThemeSet": { "title": "Rastgele Tema Seti", "desc": "Haç mı? Misyon mu? Adanmışlık mı? Bakalım..." },
     "randomTenSong": { "title": "Rastgele 10 İlahilik Koleksiyon", "desc": "Beni şaşırt!" },
     "sendMeSongbook": { "title": "\"Beni Gönder\" İlahi Kitabı", "desc": "Misyon temalı bir ilahi kitabı oluşturun." },
-    "graceChordsSongbook": { "title": "GraceChords İlahi Kitabı", "desc": "Tüm kütüphanemiz tek bir yazdırılabilir kitapta." },
+    "atrilSongbook": { "title": "Atril İlahi Kitabı", "desc": "Tüm kütüphanemiz tek bir yazdırılabilir kitapta." },
     "contribute": { "title": "Katkıda Bulun", "desc": "Kaynak kodu indirin, özellik önerin veya hata bildirin." }
   },
   "latestSongs": "En Son İlahiler",

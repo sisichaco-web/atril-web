@@ -1,6 +1,6 @@
 {
   "_meta": { "reviewer": "", "reviewedAt": "", "needsReview": true },
-  "appName": "GraceChords",
+  "appName": "Atril",
   "save": "Guardar",
   "cancel": "Cancelar",
   "delete": "Eliminar",
@@ -24,17 +24,17 @@
   "or": "o",
   "continueWithGoogle": "Continuar con Google",
   "footer": {
-    "disclaimerBefore": "Todas las letras son propiedad de sus respectivos dueños. GraceChords ofrece herramientas solo para uso personal y educativo. Titulares de derechos, ",
+    "disclaimerBefore": "Todas las letras son propiedad de sus respectivos dueños. Atril ofrece herramientas solo para uso personal y educativo. Titulares de derechos, ",
     "disclaimerLink": "escríbanos",
     "disclaimerAfter": " para solicitudes de retirada.",
-    "download": "Obtén la app de GraceChords",
-    "copyright": "© {{range}} Ryan Moore. Todos los derechos reservados."
+    "download": "Obtén la app de Atril",
+    "copyright": "Atril � por Sisirock"
   },
   "announcement": {
     "regionLabel": "Anuncio del sitio",
     "dismiss": "Cerrar anuncio",
     "iosLaunch": {
-      "message": "GraceChords ya está en el App Store.",
+      "message": "Atril ya está en el App Store.",
       "cta": "Obtener la app"
     }
   }

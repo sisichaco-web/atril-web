@@ -7,7 +7,7 @@ import type { ChapterData } from './types'
 import { joinUrl, type FetchLike } from './translations'
 
 export type ChapterQuery = {
-  /** Base URL of the source, e.g. https://assets.gracechords.com */
+  /** Base URL of the source, e.g. https://assets.atril.com */
   baseUrl: string
   /** Translation dataRoot from the manifest, e.g. `bible/en/esv`. */
   dataRoot: string

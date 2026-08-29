@@ -1,8 +1,8 @@
 # Delete Your Account
 
-**Applies to:** GraceChords, operated by Ryan Moore — the GraceChords website ([https://gracechords.com](https://gracechords.com)) and the GraceChords mobile app (collectively, the "Service").
+**Applies to:** Atril, operated by Ryan Moore — the Atril website ([https://atril.com](https://atril.com)) and the Atril mobile app (collectively, the "Service").
 
-You can delete your GraceChords account and all of its associated data at any
+You can delete your Atril account and all of its associated data at any
 time. Account deletion is **immediate** and **permanent** — there is no waiting
 period or grace period, and a deleted account cannot be recovered.
 
@@ -15,9 +15,9 @@ emailing us.
 
 ### On the website
 
-1. Go to [https://gracechords.com](https://gracechords.com) and **sign in**.
+1. Go to [https://atril.com](https://atril.com) and **sign in**.
 2. Open your **Profile** (your account icon in the top navigation, or
-   [https://gracechords.com/profile](https://gracechords.com/profile)).
+   [https://atril.com/profile](https://atril.com/profile)).
 3. Scroll to the **Account** section and select **Delete account**.
 4. Confirm in the dialog that appears. If you signed up with an email and
    password, you'll confirm your password; if you signed in with Google or
@@ -33,7 +33,7 @@ emailing us.
 
 ### By email
 
-If you can't sign in, email **ryan@gracechords.com** from the address on your
+If you can't sign in, email **ryan@atril.com** from the address on your
 account and ask us to delete it. We'll verify your identity and delete your
 account.
 
@@ -64,7 +64,7 @@ tied to your account remains in the active Service.
   legally required to do so; these are kept only as long as the law requires and
   are not used for any other purpose.
 
-The public songs, Scripture texts, and other library content in GraceChords are
+The public songs, Scripture texts, and other library content in Atril are
 not personal to you and are unaffected by deleting your account.
 
 ---
@@ -73,8 +73,8 @@ not personal to you and are unaffected by deleting your account.
 
 For anything related to your account or data, contact:
 
-**Ryan Moore — GraceChords**
-Email: **ryan@gracechords.com**
+**Ryan Moore — Atril**
+Email: **ryan@atril.com**
 Location: Georgia, USA
 
 See also our [Privacy Policy](/privacy) and [Terms of Use](/terms).

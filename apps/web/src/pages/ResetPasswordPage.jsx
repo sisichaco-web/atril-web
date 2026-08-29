@@ -2,21 +2,11 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import PasswordStrengthPopover from '../components/auth/PasswordStrengthPopover'
+import AuthBranding from '../components/auth/AuthBranding'
 import '../styles/auth.css'
 
 export default function ResetPasswordPage() {
   const navigate = useNavigate()
-
-  const [isDark, setIsDark] = useState(
-    () => document.documentElement.dataset.theme === 'dark'
-  )
-  useEffect(() => {
-    const observer = new MutationObserver(() =>
-      setIsDark(document.documentElement.dataset.theme === 'dark')
-    )
-    observer.observe(document.documentElement, { attributeFilter: ['data-theme'] })
-    return () => observer.disconnect()
-  }, [])
 
   // 'checking' | 'valid' | 'invalid'
   const [sessionState, setSessionState] = useState('checking')
@@ -98,11 +88,7 @@ export default function ResetPasswordPage() {
   return (
     <div className="gc-auth-page">
       <div className="gc-auth-card">
-        <img
-          src={isDark ? '/gc-brand-wide-dark.svg' : '/gc-brand-wide-light.svg'}
-          alt="GraceChords"
-          className="gc-auth-card__wordmark"
-        />
+        <AuthBranding />
 
         {sessionState === 'invalid' ? (
           <>

@@ -1,6 +1,6 @@
 # Layout Kit
 
-UIKit-inspired layout primitives for GraceChords. Import from `src/components/ui/layout-kit` and compose with existing pages.
+UIKit-inspired layout primitives for Atril. Import from `src/components/ui/layout-kit` and compose with existing pages.
 
 Usage highlights
 - `PageHeader` for page titles + optional subtitle/actions.

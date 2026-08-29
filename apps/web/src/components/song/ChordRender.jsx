@@ -5,8 +5,8 @@ import { transposeInstrumental, formatInstrumental } from '../../utils/songs/ins
 import { buildChordRowsLayout } from '../../utils/songs/chordLineLayout'
 
 // Shared chord/lyric render primitives. These were originally defined inside
-// WorshipModePage; they are self-contained (props in, module-level utils only)
-// so both Worship Mode and the live Session follower render identically from one
+// LiveModePage; they are self-contained (props in, module-level utils only)
+// so both Live Mode and the live Session follower render identically from one
 // implementation. Chords are canvas-measured and absolutely positioned above the
 // `.lyrics` line (white-space: pre) via buildChordRowsLayout.
 

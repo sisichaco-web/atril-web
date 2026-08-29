@@ -29,7 +29,7 @@ describe('bible translations defaults', () => {
   })
 
   it('defaults to ESV when UI language resolves to english', async () => {
-    localStorage.setItem('gracechords.uiLanguage', 'en')
+    localStorage.setItem('atril.uiLanguage', 'en')
     mockManifest([
       { id: 'nvi', label: 'NVI', name: 'Nueva Versión Internacional', language: 'es', dataRoot: 'bible/es/nvi' },
       { id: 'esv', label: 'ESV', name: 'English Standard Version', language: 'en', dataRoot: 'bible/en/esv' },
@@ -41,7 +41,7 @@ describe('bible translations defaults', () => {
   })
 
   it('defaults to first translation in UI language when UI is not english', async () => {
-    localStorage.setItem('gracechords.uiLanguage', 'tr')
+    localStorage.setItem('atril.uiLanguage', 'tr')
     mockManifest([
       { id: 'esv', label: 'ESV', name: 'English Standard Version', language: 'en', dataRoot: 'bible/en/esv' },
       { id: 'yyc', label: 'YYÇ', name: 'Yeni Yaşam Ceviri', language: 'tr', dataRoot: 'bible/tr/yyc' },

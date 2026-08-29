@@ -1,4 +1,4 @@
-// Supported UI locales for GraceChords. To add a new language:
+// Supported UI locales for Atril. To add a new language:
 //  1. Add an entry below (code = BCP-47 lang tag, label = native name).
 //  2. Create src/i18n/locales/<code>/ with the same JSON files as en/.
 //  3. Run `npm run i18n:check` to confirm key parity.
@@ -11,7 +11,7 @@ export const SUPPORTED_LOCALES = [
 
 export const DEFAULT_LOCALE = 'en'
 
-export const LOCALE_STORAGE_KEY = 'gracechords.uiLanguage'
+export const LOCALE_STORAGE_KEY = 'atril.uiLanguage'
 
 export const I18N_NAMESPACES = [
   'common',

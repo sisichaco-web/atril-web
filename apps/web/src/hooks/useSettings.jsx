@@ -1,9 +1,28 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { applyTheme, currentTheme } from '../utils/app/theme'
 
-const CHORD_STYLE_KEY = 'gracechords.chordStyle'
+const CHORD_STYLE_KEY = 'atril.chordStyle'
+const INSTRUMENT_KEY = 'atril.instrumentProfile'
+
+// Instrumento Offset: Concert=0, Bb=+2, Eb=+9
+// (offset que hay que sumar ANTES de la transposición manual del usuario)
+export const INSTRUMENT_OFFSETS = {
+  concert: 0,
+  Bb: 2,   // Trompeta, Clarinete, Saxo Tenor — +2 semitonos
+  Eb: 9,   // Saxo Alto, Saxo Barítono — +9 semitonos
+}
 
 const SettingsContext = createContext(null)
+
+function readStoredInstrumentProfile() {
+  try {
+    const v = localStorage.getItem(INSTRUMENT_KEY)
+    if (['concert', 'Bb', 'Eb'].includes(v)) return v
+    return 'concert'
+  } catch {
+    return 'concert'
+  }
+}
 
 function readStoredChordStyle() {
   try {
@@ -17,6 +36,7 @@ function readStoredChordStyle() {
 export function SettingsProvider({ children }) {
   const [theme, setThemeState] = useState(() => currentTheme())
   const [chordStyle, setChordStyleState] = useState(() => readStoredChordStyle())
+  const [instrumentProfile, setInstrumentProfileState] = useState(() => readStoredInstrumentProfile())
 
   // Stay in sync if anything else mutates the html data-theme attribute
   // (e.g. the system-preference watcher set up in main.jsx).
@@ -30,12 +50,15 @@ export function SettingsProvider({ children }) {
     return () => obs.disconnect()
   }, [])
 
-  // Cross-tab sync for chord style
+  // Cross-tab sync for chord style and instrument
   useEffect(() => {
     if (typeof window === 'undefined') return
     function onStorage(e) {
-      if (e.key !== CHORD_STYLE_KEY) return
-      setChordStyleState(e.newValue === 'solfege' ? 'solfege' : 'letters')
+      if (e.key === CHORD_STYLE_KEY) {
+        setChordStyleState(e.newValue === 'solfege' ? 'solfege' : 'letters')
+      } else if (e.key === INSTRUMENT_KEY) {
+        setInstrumentProfileState(['concert', 'Bb', 'Eb'].includes(e.newValue) ? e.newValue : 'concert')
+      }
     }
     window.addEventListener('storage', onStorage)
     return () => window.removeEventListener('storage', onStorage)
@@ -53,6 +76,12 @@ export function SettingsProvider({ children }) {
       applyTheme(next, { persist: true })
       return next
     })
+  }, [])
+
+  const setInstrumentProfile = useCallback((profile) => {
+    const p = ['concert', 'Bb', 'Eb'].includes(profile) ? profile : 'concert'
+    try { localStorage.setItem(INSTRUMENT_KEY, p) } catch {}
+    setInstrumentProfileState(p)
   }, [])
 
   const setChordStyle = useCallback((style) => {
@@ -76,7 +105,9 @@ export function SettingsProvider({ children }) {
     chordStyle,
     setChordStyle,
     toggleChordStyle,
-  }), [theme, setTheme, toggleTheme, chordStyle, setChordStyle, toggleChordStyle])
+    instrumentProfile,
+    setInstrumentProfile,
+  }), [theme, setTheme, toggleTheme, chordStyle, setChordStyle, toggleChordStyle, instrumentProfile, setInstrumentProfile])
 
   return <SettingsContext.Provider value={value}>{children}</SettingsContext.Provider>
 }
@@ -91,6 +122,8 @@ export function useSettings() {
       chordStyle: readStoredChordStyle(),
       setChordStyle: () => {},
       toggleChordStyle: () => {},
+      instrumentProfile: readStoredInstrumentProfile(),
+      setInstrumentProfile: () => {},
     }
   }
   return ctx
@@ -98,4 +131,8 @@ export function useSettings() {
 
 export function useChordStyle() {
   return useSettings().chordStyle
+}
+
+export function useInstrumentProfile() {
+  return useSettings().instrumentProfile
 }

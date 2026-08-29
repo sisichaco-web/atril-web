@@ -50,7 +50,7 @@ export async function smartPreviewAndShareJPG(
         try {
           // @ts-ignore
           await navigator.share({
-            title: 'GraceChords Image',
+            title: 'Atril Image',
             files: [file],
           })
         } catch (shareErr) {

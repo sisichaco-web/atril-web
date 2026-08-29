@@ -54,7 +54,7 @@ export async function downloadSongbookPdf(songs = [], { includeTOC = true, cover
   const res = await renderSongbookPdfDoc(songs, {
     includeTOC,
     coverImageDataUrl,
-    title: 'GraceChords Songbook',
+    title: 'Atril Songbook',
     subtitle,
     registerFonts: registerPdfFonts,
   })

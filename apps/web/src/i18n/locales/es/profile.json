@@ -2,6 +2,6 @@
   "_meta": { "reviewer": "Ryan", "reviewedAt": "5/3/26", "needsReview": false },
   "preferences": "Preferencias",
   "uiLanguage": "Idioma de la interfaz",
-  "uiLanguageHelper": "Cambia el idioma utilizado en la interfaz de GraceChords.",
+  "uiLanguageHelper": "Cambia el idioma utilizado en la interfaz de Atril.",
   "saveFailed": "No se pudo guardar el perfil."
 }

@@ -65,9 +65,13 @@ import {
   Lock,
   MicOff,
   Music,
+  Guitar,
+  Drum,
+  MicVocal,
   User,
   Users,
   Piano,
+  Music2,
   CopyPlus,
   CircleHelp,
   Share,
@@ -164,6 +168,11 @@ export const ListIcon = wrap(List) // SF: list.bullet
 export const LockIcon = wrap(Lock) // SF: lock
 export const MicOffIcon = wrap(MicOff) // SF: mic.slash
 export const MusicIcon = wrap(Music) // SF: music.note
+export const GuitarIcon = wrap(Guitar)
+export const DrumIcon = wrap(Drum)
+export const MicVocalIcon = wrap(MicVocal)
+export const PianoIcon = wrap(Piano)
+export const Music2Icon = wrap(Music2)
 export const UserIcon = wrap(User) // SF: person
 export const UsersIcon = wrap(Users) // SF: person.2, person.2.fill (no filled Users in Lucide)
 export const PitchPipeIcon = wrap(Piano) // SF: pianokeys

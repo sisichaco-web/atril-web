@@ -33,8 +33,10 @@
 
 .gc-auth-card__wordmark {
   display: block;
+  width: 140px;
+  height: 112px;
+  object-fit: contain;
   margin: 0 auto var(--space-5);
-  height: 36px;
 }
 
 .gc-auth-form {
@@ -283,6 +285,13 @@
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.gc-sprite-avatar svg {
+  width: 48%;
+  height: 48%;
+  margin: 26%;
+  color: var(--gc-primary);
 }
 
 /* ===== Star button ===== */

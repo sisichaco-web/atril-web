@@ -24,14 +24,14 @@ vi.mock('../../hooks/useSongs', () => ({
   useSongs: () => ({ songs: songMock.songs, loading: false }),
 }))
 
-import WorshipMode from '../WorshipModePage'
+import LiveMode from '../LiveModePage'
 
 function setViewport(width){
   Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: width })
   window.dispatchEvent(new Event('resize'))
 }
 
-describe('WorshipMode — mobile toolbar and snackbar', () => {
+describe('LiveMode — mobile toolbar and snackbar', () => {
   beforeEach(() => {
     localStorage.clear()
     sessionStorage.clear()
@@ -42,7 +42,7 @@ describe('WorshipMode — mobile toolbar and snackbar', () => {
     render(
       <MemoryRouter initialEntries={[`/worship/abba,above-all`]}>
         <Routes>
-          <Route path="/worship/:songIds" element={<WorshipMode />} />
+          <Route path="/live/:songIds" element={<LiveMode />} />
         </Routes>
       </MemoryRouter>
     )
@@ -68,7 +68,7 @@ describe('WorshipMode — mobile toolbar and snackbar', () => {
     render(
       <MemoryRouter initialEntries={[`/worship/abba`]}>
         <Routes>
-          <Route path="/worship/:songIds" element={<WorshipMode />} />
+          <Route path="/live/:songIds" element={<LiveMode />} />
         </Routes>
       </MemoryRouter>
     )
@@ -86,7 +86,7 @@ describe('WorshipMode — mobile toolbar and snackbar', () => {
     render(
       <MemoryRouter initialEntries={[`/worship/abba`]}>
         <Routes>
-          <Route path="/worship/:songIds" element={<WorshipMode />} />
+          <Route path="/live/:songIds" element={<LiveMode />} />
         </Routes>
       </MemoryRouter>
     )
@@ -100,7 +100,7 @@ describe('WorshipMode — mobile toolbar and snackbar', () => {
     render(
       <MemoryRouter initialEntries={[`/worship/abba`]}>
         <Routes>
-          <Route path="/worship/:songIds" element={<WorshipMode />} />
+          <Route path="/live/:songIds" element={<LiveMode />} />
         </Routes>
       </MemoryRouter>
     )
@@ -125,7 +125,7 @@ describe('WorshipMode — mobile toolbar and snackbar', () => {
     render(
       <MemoryRouter initialEntries={[`/worship/abba`]}>
         <Routes>
-          <Route path="/worship/:songIds" element={<WorshipMode />} />
+          <Route path="/live/:songIds" element={<LiveMode />} />
         </Routes>
       </MemoryRouter>
     )
@@ -153,7 +153,7 @@ describe('WorshipMode — mobile toolbar and snackbar', () => {
     render(
       <MemoryRouter initialEntries={[`/worship/abba,above-all`]}>
         <Routes>
-          <Route path="/worship/:songIds" element={<WorshipMode />} />
+          <Route path="/live/:songIds" element={<LiveMode />} />
         </Routes>
       </MemoryRouter>
     )

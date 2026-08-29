@@ -2,8 +2,8 @@ import { describe, expect, test } from 'vitest'
 import { hasDisclaimerCommentBlock, appendDisclaimerIfMissing } from '../../chordpro/disclaimer'
 
 const BLOCK = [
-  '# --- DISCLAIMER (GraceChords) ---',
-  '# All lyrics and music are the property of their respective owners. GraceChords provides tools for personal worship and educational use only. Do not repost or redistribute copyrighted lyrics/charts. Rights holder, email us for takedown requests.',
+  '# --- DISCLAIMER (Atril) ---',
+  '# All lyrics and music are the property of their respective owners. Atril provides tools for personal worship and educational use only. Do not repost or redistribute copyrighted lyrics/charts. Rights holder, email us for takedown requests.',
   '# --- END DISCLAIMER ---',
   ''
 ].join('\n')

@@ -1,9 +1,9 @@
 # Terms of Use
 
 **Effective date:** August 4th, 2026
-**Applies to:** the GraceChords website ([https://gracechords.com](https://gracechords.com)) and the GraceChords mobile app (collectively, the "Service").
+**Applies to:** the Atril website ([https://atril.com](https://atril.com)) and the Atril mobile app (collectively, the "Service").
 
-Welcome to GraceChords. The Service is a free, non-commercial worship tool operated by Ryan Moore, an individual based in the U.S. state of Georgia ("we," "us," or "our"). By using the Service, you agree to these Terms of Use. If you do not agree, please do not use the Service.
+Welcome to Atril. The Service is a free, non-commercial herramienta musical operated by Ryan Moore, an individual based in the U.S. state of Georgia ("we," "us," or "our"). By using the Service, you agree to these Terms of Use. If you do not agree, please do not use the Service.
 
 ---
 
@@ -15,7 +15,7 @@ You must meet the minimum age required in your jurisdiction to agree to these Te
 
 ## 2. The Service
 
-GraceChords provides worship tools including a song and chord-chart library, a setlist builder, and a Scripture reader. The Service is provided free of charge and "as is."
+Atril provides herramienta musicals including a song and chord-chart library, a setlist builder, and a Scripture reader. The Service is provided free of charge and "as is."
 
 We may add, change, suspend, or discontinue any part of the Service at any time, and we may set or change limits on features or storage. We are not liable to you for any change to or discontinuation of the Service.
 
@@ -29,7 +29,7 @@ To use certain features, you create an account. You are responsible for:
 - Keeping your login credentials secure
 - All activity that occurs under your account
 
-Notify us at ryan@gracechords.com if you believe your account has been accessed without your authorization.
+Notify us at ryan@atril.com if you believe your account has been accessed without your authorization.
 
 ---
 
@@ -59,13 +59,13 @@ We may suspend or terminate access for conduct that violates these Terms.
 
 The Service may display or allow you to work with song lyrics, chord charts, Scripture text, and other materials. Some of this material may be subject to copyright held by third parties.
 
-You are responsible for ensuring that your use of any such material — including reproducing, performing, displaying, or exporting it — complies with applicable copyright law and any licenses you are required to hold (for example, a CCLI license for congregational use of copyrighted worship songs). GraceChords does not grant you any rights in third-party content and is not responsible for how you use it.
+You are responsible for ensuring that your use of any such material — including reproducing, performing, displaying, or exporting it — complies with applicable copyright law and any licenses you are required to hold (for example, a CCLI license for congregational use of copyrighted worship songs). Atril does not grant you any rights in third-party content and is not responsible for how you use it.
 
 ---
 
 ## 7. Copyright and takedown requests
 
-We respect intellectual property rights. If you believe content available through the Service infringes your copyright, contact us at **ryan@gracechords.com** with:
+We respect intellectual property rights. If you believe content available through the Service infringes your copyright, contact us at **ryan@atril.com** with:
 
 - A description of the copyrighted work you believe is infringed
 - The specific location of the material on the Service
@@ -78,9 +78,9 @@ We will review and respond to valid requests, and may remove or disable access t
 
 ## 8. Intellectual property
 
-The GraceChords source code is released as open source under the Apache License 2.0 and is available in our public repositories; your use of that code is governed by that license.
+The Atril source code is released as open source under the Apache License 2.0 and is available in our public repositories; your use of that code is governed by that license.
 
-These Terms do not grant you rights to the "GraceChords" name, logo, or branding, which remain ours. All rights not expressly granted are reserved.
+These Terms do not grant you rights to the "Atril" name, logo, or branding, which remain ours. All rights not expressly granted are reserved.
 
 ---
 
@@ -92,7 +92,7 @@ The Service is provided "as is" and "as available," without warranties of any ki
 
 ## 10. Limitation of liability
 
-To the fullest extent permitted by law, GraceChords and Ryan Moore will not be liable for any indirect, incidental, special, consequential, or punitive damages, or for any loss of data, arising out of or relating to your use of the Service. Because the Service is provided free of charge, our total liability to you for any claim relating to the Service is limited to the amount you paid us for it, which is zero.
+To the fullest extent permitted by law, Atril and Ryan Moore will not be liable for any indirect, incidental, special, consequential, or punitive damages, or for any loss of data, arising out of or relating to your use of the Service. Because the Service is provided free of charge, our total liability to you for any claim relating to the Service is limited to the amount you paid us for it, which is zero.
 
 Some jurisdictions do not allow certain limitations, so some of the above may not apply to you.
 
@@ -120,6 +120,6 @@ These Terms are governed by the laws of the State of Georgia, USA, without regar
 
 Questions about these Terms:
 
-**Ryan Moore — GraceChords**
-Email: **ryan@gracechords.com**
+**Ryan Moore — Atril**
+Email: **ryan@atril.com**
 Location: Georgia, USA

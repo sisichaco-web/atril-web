@@ -33,8 +33,8 @@ const supabaseUrl = process.env.VITE_SUPABASE_URL
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
 if (!supabaseUrl || !supabaseServiceKey) {
-  console.error('Error: VITE_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY must be set.')
-  process.exit(1)
+  console.warn('Warning: VITE_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY not set. Skipping SEO page generation.')
+  process.exit(0)
 }
 
 const supabase = createClient(supabaseUrl, supabaseServiceKey)

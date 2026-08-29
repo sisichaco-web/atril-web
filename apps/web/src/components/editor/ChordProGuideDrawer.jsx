@@ -81,7 +81,7 @@ export default function ChordProGuideDrawer({ open, onClose }) {
           </section>
 
           <section className="gc-guide-drawer__section gc-guide-drawer__section--warning">
-            <h3 className="gc-guide-drawer__section-title">Not Supported in GraceChords</h3>
+            <h3 className="gc-guide-drawer__section-title">Not Supported in Atril</h3>
             <p className="gc-guide-drawer__text">
               The following standard ChordPro features are <strong>not rendered</strong> and should not be placed in the body field:
             </p>

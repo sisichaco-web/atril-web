@@ -1,6 +1,6 @@
 ## Open-Source Components
 
-GraceChords is built with the open-source software listed below (1041 packages), each distributed under its own license. We are grateful to the authors and maintainers of these projects.
+Atril is built with the open-source software listed below (1041 packages), each distributed under its own license. We are grateful to the authors and maintainers of these projects.
 
 - **@babel/code-frame** 7.10.4 — MIT — [https://github.com/babel/babel](https://github.com/babel/babel)
 - **@babel/code-frame** 7.29.7 — MIT — [https://github.com/babel/babel](https://github.com/babel/babel)

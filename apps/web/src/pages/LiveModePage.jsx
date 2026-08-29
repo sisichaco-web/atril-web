@@ -34,7 +34,7 @@ function safeDecodeURIComponent(value){
   try { return decodeURIComponent(value) } catch { return value }
 }
 
-export default function WorshipMode(){
+export default function LiveMode(){
   const { songIds = '' } = useParams()
   const navigate = useNavigate()
   const chordStyle = useChordStyle()
@@ -715,7 +715,7 @@ export default function WorshipMode(){
         copy.splice(Math.min(prev.length, idx + 1), 0, { id: entry.id, title, baseKey, sections, type: 'song' })
         // Update URL for persistence
         const newIds = copy.map(s => encodeURIComponent(s.id))
-        navigate(`/worship/${newIds.join(',')}`)
+        navigate(`/live/${newIds.join(',')}`)
         return copy
       })
       setBaseOffsets(prev => {
@@ -756,7 +756,7 @@ export default function WorshipMode(){
     return (
       <div className="WorshipRoot" style={{display:'grid', placeItems:'center', minHeight:'100dvh'}}>
         <div style={{textAlign:'center'}}>
-          <h1>Worship Mode</h1>
+          <h1>Live Mode</h1>
           <p>No songs provided. Append /worship/id1,id2 to the URL.</p>
           <button className="gc-btn" onClick={() => navigate('/')}>Back</button>
         </div>
@@ -1244,7 +1244,7 @@ export default function WorshipMode(){
   )
 }
 
-/* ---------- Title strip for Worship Mode ---------- */
+/* ---------- Title strip for Live Mode ---------- */
 function TitleStrip({ title, clockText, showClock, stopwatchText, showStopwatch, sizeCss, isRunning, onToggleRun, onReset, canReset, controlsInHeader = true }){
   const hostRef = useRef(null)
   const leftRef = useRef(null)

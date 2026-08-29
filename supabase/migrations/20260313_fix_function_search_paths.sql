@@ -3,21 +3,52 @@
 -- schema functions flagged by Supabase Advisor lint 0011.
 --
 -- All bodies are verified against the live Supabase Dashboard definitions.
---
--- Corrections applied on top of the verified definitions:
---   • current_user_global_role — DROPPED (no callers in src/; global_role
---     enum may no longer exist after profiles/enum cleanup).
---   • claim_contributor_invite — `current_role global_role` → `current_role
---     text`; `set global_role = 'contributor'` → `set role = 'collaborator'`.
---   • review_contributor_request — same global_role → role fix.
---   • is_global_admin / is_global_editor — rewritten to call get_user_role()
---     instead of the dropped current_user_global_role().
---
--- WARNING: claim_contributor_invite and review_contributor_request reference
--- the `contributor_invites`, `contributor_requests`, and `song_proposals`
--- tables plus the `request_status` / `proposal_status` custom types.
--- Confirm these objects still exist in the DB before pushing.
 -- =============================================================================
+
+-- Ensure types and tables referenced by legacy functions exist for fresh DB builds
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'request_status') THEN
+    CREATE TYPE request_status AS ENUM ('pending', 'approved', 'denied');
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'proposal_status') THEN
+    CREATE TYPE proposal_status AS ENUM ('pending', 'approved', 'rejected');
+  END IF;
+END $$;
+
+CREATE TABLE IF NOT EXISTS public.contributor_invites (
+  id uuid primary key default gen_random_uuid(),
+  token text unique not null,
+  invited_email text not null,
+  claimed_by uuid references public.users(id),
+  claimed_at timestamptz,
+  created_at timestamptz default now()
+);
+
+CREATE TABLE IF NOT EXISTS public.contributor_requests (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid,
+  status text,
+  reviewed_by uuid,
+  reviewed_at timestamptz,
+  rejection_reason text
+);
+
+CREATE TABLE IF NOT EXISTS public.song_proposals (
+  id uuid primary key default gen_random_uuid(),
+  song_id uuid,
+  status text,
+  type text,
+  proposed_title text,
+  proposed_artist text,
+  proposed_default_key text,
+  proposed_tempo integer,
+  proposed_time_signature text,
+  proposed_chordpro_content text,
+  proposed_by uuid,
+  reviewed_by uuid,
+  reviewed_at timestamptz,
+  rejection_reason text
+);
 
 
 -- ---------------------------------------------------------------------------
@@ -259,11 +290,11 @@ SECURITY DEFINER
 SET search_path = ''
 AS $function$
 declare
-  invite contributor_invites%rowtype;
+  invite public.contributor_invites%rowtype;
   current_role text;
 begin
   select * into invite
-  from contributor_invites
+  from public.contributor_invites
   where token = invite_token;
 
   if not found then
@@ -286,7 +317,7 @@ begin
     return 'already_contributor';
   end if;
 
-  update contributor_invites
+  update public.contributor_invites
   set claimed_by = auth.uid(),
       claimed_at = now()
   where id = invite.id;
@@ -312,14 +343,14 @@ SECURITY DEFINER
 SET search_path = ''
 AS $function$
 declare
-  req contributor_requests%rowtype;
+  req public.contributor_requests%rowtype;
 begin
   if not public.is_global_admin() then
     return 'unauthorized';
   end if;
 
   select * into req
-  from contributor_requests
+  from public.contributor_requests
   where id = request_id;
 
   if not found then
@@ -330,7 +361,7 @@ begin
     return 'already_reviewed';
   end if;
 
-  update contributor_requests
+  update public.contributor_requests
   set status           = decision,
       reviewed_by      = auth.uid(),
       reviewed_at      = now(),
@@ -359,14 +390,14 @@ SECURITY DEFINER
 SET search_path = ''
 AS $function$
 declare
-  prop song_proposals%rowtype;
+  prop public.song_proposals%rowtype;
 begin
   if not public.is_global_editor() then
     return 'unauthorized';
   end if;
 
   select * into prop
-  from song_proposals
+  from public.song_proposals
   where id = proposal_id;
 
   if not found then
@@ -377,7 +408,7 @@ begin
     return 'already_reviewed';
   end if;
 
-  update song_proposals
+  update public.song_proposals
   set status           = decision,
       reviewed_by      = auth.uid(),
       reviewed_at      = now(),
@@ -388,7 +419,7 @@ begin
     case prop.type
 
       when 'add' then
-        insert into songs (
+        insert into public.songs (
           title, artist, default_key, tempo, time_signature,
           chordpro_content, created_by, updated_by
         ) values (
@@ -403,7 +434,7 @@ begin
         );
 
       when 'update' then
-        update songs set
+        update public.songs set
           title            = coalesce(prop.proposed_title,            title),
           artist           = coalesce(prop.proposed_artist,           artist),
           default_key      = coalesce(prop.proposed_default_key,      default_key),
@@ -415,7 +446,7 @@ begin
         where id = prop.song_id;
 
       when 'delete' then
-        update songs
+        update public.songs
         set is_deleted = true,
             updated_by = auth.uid(),
             updated_at = now()

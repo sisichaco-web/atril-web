@@ -17,8 +17,8 @@ export default function TermsPage() {
   return (
     <div className="container gc-post-detail">
       <Helmet>
-        <title>Terms of Use · GraceChords</title>
-        <meta name="description" content="The terms governing use of GraceChords." />
+        <title>Terms of Use · Atril</title>
+        <meta name="description" content="The terms governing use of Atril." />
       </Helmet>
       <div
         className="gc-post-detail__content gc-prose"

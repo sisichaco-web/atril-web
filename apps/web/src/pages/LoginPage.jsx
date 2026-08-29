@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../hooks/useAuth'
+import AuthBranding from '../components/auth/AuthBranding'
 import '../styles/auth.css'
 
 export default function LoginPage() {
@@ -11,17 +12,6 @@ export default function LoginPage() {
   const navigate = useNavigate()
   const location = useLocation()
   const redirectTo = new URLSearchParams(location.search).get('redirect') || '/'
-
-  const [isDark, setIsDark] = useState(
-    () => document.documentElement.dataset.theme === 'dark'
-  )
-  useEffect(() => {
-    const observer = new MutationObserver(() =>
-      setIsDark(document.documentElement.dataset.theme === 'dark')
-    )
-    observer.observe(document.documentElement, { attributeFilter: ['data-theme'] })
-    return () => observer.disconnect()
-  }, [])
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -58,11 +48,7 @@ export default function LoginPage() {
   return (
     <div className="gc-auth-page">
       <div className="gc-auth-card">
-        <img
-          src={isDark ? '/gc-brand-wide-dark.svg' : '/gc-brand-wide-light.svg'}
-          alt="GraceChords"
-          className="gc-auth-card__wordmark"
-        />
+        <AuthBranding />
         <h1 className="gc-auth-card__title">{t('welcomeBack')}</h1>
         <p className="gc-auth-card__subtitle">{t('signInToAccount')}</p>
 

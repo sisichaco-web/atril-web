@@ -1,4 +1,4 @@
-// Cross-platform icon mapping — the web half of the GraceChords icon vocabulary.
+// Cross-platform icon mapping — the web half of the Atril icon vocabulary.
 //
 // This is the single documented Rosetta between the platforms:
 //   UI concept  ->  SF Symbol (iOS, apps/mobile)  ->  lucide-react (web)  ->  web registry export

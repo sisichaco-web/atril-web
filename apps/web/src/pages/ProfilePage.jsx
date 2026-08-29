@@ -7,6 +7,7 @@ import { useAuth } from '../hooks/useAuth'
 import SpritePicker from '../components/ui/SpritePicker'
 import SpriteAvatar from '../components/ui/SpriteAvatar'
 import LanguageSelector from '../components/ui/LanguageSelector'
+import { useSettings, useInstrumentProfile } from '../hooks/useSettings'
 import TelegramLoginButton from '../components/TelegramLoginButton'
 import { showToast } from '../utils/app/toast'
 import '../styles/settings.css'
@@ -17,6 +18,7 @@ export default function ProfilePage() {
   const { session, profile, loading, isLoggedIn, refreshProfile, role, isAdmin } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
+  const { instrumentProfile, setInstrumentProfile } = useSettings()
 
   const [displayName, setDisplayName] = useState('')
   const [sprite, setSprite] = useState(null)
@@ -251,7 +253,7 @@ export default function ProfilePage() {
 
   return (
     <div className="container">
-      <Helmet><title>Profile – GraceChords</title></Helmet>
+      <Helmet><title>Profile – Atril</title></Helmet>
 
       {/* Profile header */}
       <div className="gc-profile-header">
@@ -344,7 +346,7 @@ export default function ProfilePage() {
       <section id="telegram" className="gc-profile-section">
         <h2>Telegram</h2>
         <p style={{ margin: 0, color: 'var(--gc-text-secondary)' }}>
-          Link your account to <strong>@gracechords_bot</strong> on Telegram so you can DM the bot a song title (or a comma-separated setlist) and get chord charts back instantly.
+          Link your account to <strong>@atril_bot</strong> on Telegram so you can DM the bot a song title (or a comma-separated setlist) and get chord charts back instantly.
         </p>
         {telegramLoading ? (
           <p style={{ color: 'var(--gc-text-secondary)' }}>Checking link status…</p>

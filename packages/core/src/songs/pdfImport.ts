@@ -229,14 +229,14 @@ export type LineType = 'chords' | 'lyrics' | 'heading' | 'blank'
 
 // Wrapped in brackets or parentheses, or bare, with an optional number and an
 // optional trailing colon: `Verse 1`, `[VERSE 1]`, `(Chorus)`, `CHORUS:`. The
-// bracketed uppercase form is what GraceChords' own PDF export draws, and it is
+// bracketed uppercase form is what Atril' own PDF export draws, and it is
 // the most common convention in the wild — the old ingest CLI accepted only the
-// bare form, which is why every heading in a GraceChords-exported chart imported
+// bare form, which is why every heading in a Atril-exported chart imported
 // as a lyric line.
 // Wrapped in brackets or parentheses, or bare, with an optional number, an optional
 // trailing colon, and an optional performance note: `Verse 1`, `[VERSE 1]`,
 // `(Chorus)`, `CHORUS:`, `Intro (2x)`, `Intro (2x) (Riff)`. The bracketed upper-case
-// form is what GraceChords' own PDF export draws; the `(2x)` suffix is what
+// form is what Atril' own PDF export draws; the `(2x)` suffix is what
 // PraiseCharts draws. The old ingest CLI accepted only the bare unannotated form,
 // which is why headings in both of those imported as lyric lines.
 const RX_HEADING =
@@ -346,10 +346,10 @@ const RX_DOMAIN = /\b[a-z0-9-]+\.(com|org|net|church|co|io|us|info|ca|uk|gov|edu
 const RX_EMAIL = /\b\S+@\S+\.[A-Za-z]{2,}\b/
 const RX_PAGE = /^\s*page\s*\d+(\s*of\s*\d+)?\s*$/i
 const RX_COPYRIGHT = /(©|\(c\)\s*\d{4}|copyright|all rights reserved|ccli)/i
-// The footer GraceChords' own PDF export draws (apps/web/src/config/disclaimer.ts,
+// The footer Atril' own PDF export draws (apps/web/src/config/disclaimer.ts,
 // `getPdfFooterDisclaimer`). Matched on the two stable phrases rather than the whole
 // sentence so a wording tweak does not silently stop stripping it. Worth its own
-// pattern because it makes a GraceChords-exported chart round-trip back in, which is
+// pattern because it makes a Atril-exported chart round-trip back in, which is
 // the one case where the importer's input is known exactly.
 const RX_DISCLAIMER = /property of their respective owners|personal worship and educational use/i
 

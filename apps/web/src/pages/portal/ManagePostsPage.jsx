@@ -61,7 +61,7 @@ export default function ManagePostsPage() {
 
   return (
     <div className="gc-portal-page">
-      <Helmet><title>Manage Posts · GraceChords</title></Helmet>
+      <Helmet><title>Manage Posts · Atril</title></Helmet>
 
       <div className="gc-portal-page__header">
         <div>

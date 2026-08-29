@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useIsMobile } from '../../hooks/useIsMobile'
 import MobileEditorPage from './MobileEditorPage'
 import MobilePortalPage from './MobilePortalPage'
@@ -30,11 +31,11 @@ const BLANK_FORM = {
   title: '',
   artist: '',
   default_key: '',
-  tempo: '',
-  time_signature: '',
-  country: '',
+  tempo: 120,
+  time_signature: '4/4',
+  country: 'Arg',
   youtube_id: '',
-  language: '',
+  language: 'Spanish',
   pptx_url: '',
   tags: [],
   chordpro_content: '',
@@ -69,6 +70,7 @@ function ConfirmDialog({ title, body, confirmLabel, confirmVariant = 'destructiv
 }
 
 function DesktopEditorPage() {
+  const { t } = useTranslation('editor')
   const { slug: slugParam } = useParams()
   const [searchParams] = useSearchParams()
   const personalParam = searchParams.get('p')
@@ -444,10 +446,10 @@ function DesktopEditorPage() {
             personalSongId: null,
           })
         } catch (err) {
-          showToast(`Error submitting suggestion: ${err.message}`); setSaving(false); return
+          showToast(`${t('suggestionSubmitError')}: ${err.message}`); setSaving(false); return
         }
         await writeAuditLog('suggestion_submitted', song?.id, song?.slug, formValues.title, payload, null)
-        showToast('Suggestion submitted for review')
+        showToast(t('suggestionSubmitted'))
         setIsDirty(false)
         setSavedFormValues(formValues)
 
@@ -521,7 +523,7 @@ function DesktopEditorPage() {
         personalSongId: personalId,
       })
       await updatePersonalSong(supabase, personalId, { status: 'submitted' })
-      showToast('Submitted for review')
+      showToast(t('submittedForReview'))
       setIsDirty(false)
       navigate('/songs')
     } catch (err) {
@@ -549,9 +551,9 @@ function DesktopEditorPage() {
   function handleDiscard() {
     if (!isDirty) return
     setConfirmDialog({
-      title: 'Discard changes',
-      body: 'Reset all changes back to the last saved state?',
-      confirmLabel: 'Discard',
+      title: t('discardChangesTitle'),
+      body: t('discardChangesBody'),
+      confirmLabel: t('discard'),
       onConfirm: () => {
         setConfirmDialog(null)
         setFormValues(savedFormValues)
@@ -580,10 +582,10 @@ function DesktopEditorPage() {
               personalSongId: null,
             })
           } catch (err) {
-            showToast(`Error submitting deletion request: ${err.message}`); return
+            showToast(`${t('deletionSubmitError')}: ${err.message}`); return
           }
           await writeAuditLog('suggestion_submitted', song.id, song.slug, song.title, null, 'Deletion request')
-          showToast('Deletion request submitted for Admin review')
+          showToast(t('deletionSubmitted'))
         },
       })
     } else if (isAtLeast('admin')) {
@@ -610,17 +612,17 @@ function DesktopEditorPage() {
     const payload = suggestion.payload || {}
     setFormValues(prev => ({ ...prev, ...payload }))
     setIsDirty(true)
-    showToast('Suggestion loaded into editor. Edit and save to apply.')
+    showToast(t('suggestionLoaded'))
   }
 
-  const saveLabel = personalId ? 'Save Draft' : (canDirectWrite(role) ? 'Save' : 'Submit for Review')
+  const saveLabel = personalId ? t('saveDraft') : (canDirectWrite(role) ? t('save') : t('submitForReview'))
   const deleteLabel = isAtLeast('admin') ? 'Delete Song' : 'Request Deletion'
 
   return (
     <div className="gc-editor-page container">
       <Helmet>
         <title>
-          {song ? `Edit: ${song.title} – GraceChords` : 'Song Editor – GraceChords'}
+          {song ? `Edit: ${song.title} – Atril` : 'Song Editor – Atril'}
         </title>
       </Helmet>
 
@@ -800,7 +802,7 @@ function DesktopEditorPage() {
             onClick={handleSubmitForReview}
             disabled={saving}
           >
-            Submit for Review
+            {t('submitForReview')}
           </button>
         )}
 
@@ -810,7 +812,7 @@ function DesktopEditorPage() {
           onClick={handleDiscard}
           disabled={!isDirty || saving}
         >
-          Discard
+          {t('discard')}
         </button>
 
         {/* Delete — editors request, admins delete directly */}

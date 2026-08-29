@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/generate-seo-pages.mjs && node scripts/generate-sitemap.mjs",
+    "build": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\" && vite build && node scripts/generate-seo-pages.mjs && node scripts/generate-sitemap.mjs",
     "preview": "vite preview",
     "build:bible": "node scripts/bible-xml-to-json.mjs",
     "test": "vitest",

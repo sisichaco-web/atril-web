@@ -16,8 +16,8 @@ export default function LinkTelegramDialog({ onClose }) {
       <div className="gc-modal" onClick={e => e.stopPropagation()}>
         <h2>Link your Telegram</h2>
         <p style={{ margin: 0, color: 'var(--gc-text-secondary)', fontSize: 'var(--gc-font-sub)' }}>
-          To send charts straight to your phone, link your GraceChords account
-          to <strong>@gracechords_bot</strong> on Telegram. It only takes a moment.
+          To send charts straight to your phone, link your Atril account
+          to <strong>@atril_bot</strong> on Telegram. It only takes a moment.
         </p>
         <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
           <button

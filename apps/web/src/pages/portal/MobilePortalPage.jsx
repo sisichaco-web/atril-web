@@ -24,7 +24,7 @@ export default function MobilePortalPage() {
   return (
     <div className="gc-me-portal">
       <Helmet>
-        <title>Song Editor – GraceChords</title>
+        <title>Song Editor – Atril</title>
       </Helmet>
 
       <div className="gc-me-portal__header">

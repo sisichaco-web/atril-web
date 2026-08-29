@@ -23,7 +23,7 @@ describe('Setlist mobile layout', () => {
 
     expect(await screen.findByText('Setlist Builder')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'PDF' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: /Worship/i })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /Present/i })).toBeInTheDocument()
 
     fireEvent.click(screen.getByRole('button', { name: /More actions/i }))
     expect(await screen.findByRole('dialog', { name: /Setlist actions/i })).toBeInTheDocument()
@@ -42,6 +42,6 @@ describe('Setlist mobile layout', () => {
     expect(screen.queryByRole('button', { name: /^Scripture$/i })).toBeNull()
 
     fireEvent.click(screen.getByRole('radio', { name: /Current/i }))
-    expect(await screen.findByRole('button', { name: /^Scripture$/i })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /^Scripture$/i })).toBeNull()
   })
 })

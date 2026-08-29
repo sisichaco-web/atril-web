@@ -44,7 +44,7 @@ export default function EditPostPage() {
   const initialContentRef = useRef('')
   const autosaveTimerRef = useRef(null)
 
-  const draftKey = `gracechords_post_draft_${isNew ? 'new' : id}`
+  const draftKey = `atril_post_draft_${isNew ? 'new' : id}`
 
   // Restore saved draft for new posts on mount
   useEffect(() => {
@@ -190,7 +190,7 @@ export default function EditPostPage() {
   return (
     <div className="gc-portal-page gc-edit-post-page">
       <Helmet>
-        <title>{isNew ? 'New Post' : `Edit: ${form.title}`} · GraceChords</title>
+        <title>{isNew ? 'New Post' : `Edit: ${form.title}`} · Atril</title>
       </Helmet>
 
       <div className="gc-portal-page__header">

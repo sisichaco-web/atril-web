@@ -28,18 +28,6 @@ import { encodeSet, decodeSet } from '../utils/setlists/setcode'
 import { downloadSetlistAsPptx } from '../utils/export/downloadSetlist'
 import { publicUrl } from '../utils/network/publicUrl'
 import { isIncompleteSong } from '../utils/songs/songStatus'
-import { parseVerseReference, suggestBookName, isVerseId, parseVerseId } from '../utils/songs/verseRef'
-import { fetchBibleChapter } from '../utils/bible/chapters'
-import {
-  getFallbackBibleTranslations,
-  listBibleTranslations,
-  readBibleTranslationPreference,
-  resolveBibleTranslationSelection,
-  resolveBibleTranslationLabel,
-  writeBibleTranslationPreference,
-} from '../utils/bible/translations'
-import { buildBibleTranslationGroups } from '../utils/bible/translationMenu'
-import BibleTranslationPicker from '../components/BibleTranslationPicker'
 import Busy from '../components/Busy'
 import { Button, Chip, Input, PageHeader, SongCard, Toolbar } from '../components/ui/layout-kit'
 import KeySelector from '../components/KeySelector'
@@ -81,44 +69,6 @@ function hydrateSelections(entries = []){
 
 function safeDecodeURIComponent(value){
   try { return decodeURIComponent(value) } catch { return value }
-}
-
-function splitVerseInput(input){
-  const raw = String(input || '')
-  if (!raw.trim()) return { bookPart: '', refPart: '' }
-  const colonIndex = raw.indexOf(':')
-  if (colonIndex > -1) {
-    let i = colonIndex - 1
-    while (i >= 0 && /\d/.test(raw[i])) i -= 1
-    const digitStart = i + 1
-    if (digitStart < colonIndex) {
-      return {
-        bookPart: raw.slice(0, digitStart).trim(),
-        refPart: raw.slice(digitStart).trim(),
-      }
-    }
-  }
-  const match = raw.match(/\s(\d+)(?=[\s:.,-]|$)/)
-  if (match && typeof match.index === 'number') {
-    return {
-      bookPart: raw.slice(0, match.index).trim(),
-      refPart: raw.slice(match.index + 1).trim(),
-    }
-  }
-  return { bookPart: raw.trim(), refPart: '' }
-}
-
-function buildVerseCompletion(input, suggestion){
-  if (!suggestion) return null
-  const raw = String(input || '')
-  if (!raw.trim()) return null
-  const { bookPart, refPart } = splitVerseInput(raw)
-  if (!bookPart) return null
-  const normalize = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '')
-  const composed = refPart ? `${suggestion} ${refPart}` : `${suggestion} `
-  if (!normalize(composed).startsWith(normalize(raw))) return null
-  if (composed.length <= raw.length) return null
-  return { composed, prefix: raw, remainder: composed.slice(raw.length) }
 }
 
 export default function Setlist(){
@@ -186,40 +136,10 @@ export default function Setlist(){
   const [manageOpen, setManageOpen] = useState(false)
   const [manageSelected, setManageSelected] = useState(() => new Set())
   const [manageBusy, setManageBusy] = useState(false)
-  const [verseOpen, setVerseOpen] = useState(false)
-  const [verseInput, setVerseInput] = useState('')
-  const [verseError, setVerseError] = useState('')
-  const [verseSuggest, setVerseSuggest] = useState('')
-  const [bibleTranslations, setBibleTranslations] = useState(() => getFallbackBibleTranslations())
-  const [verseTranslation, setVerseTranslation] = useState(() => readBibleTranslationPreference())
-  const verseCacheRef = useRef(new Map())
-  const translationGroups = useMemo(
-    () => buildBibleTranslationGroups(bibleTranslations),
-    [bibleTranslations]
-  )
 
   useEffect(() => {
     writeSongLanguagePreference(selectedLanguage)
   }, [selectedLanguage])
-
-  useEffect(() => {
-    let cancelled = false
-    async function loadTranslations(){
-      const result = await listBibleTranslations()
-      if (cancelled) return
-      setBibleTranslations(result.translations)
-      setVerseTranslation((current) => (
-        resolveBibleTranslationSelection(current, result.translations, result.defaultTranslationId)
-      ))
-    }
-    loadTranslations()
-    return () => { cancelled = true }
-  }, [])
-
-  useEffect(() => {
-    if (!verseTranslation) return
-    writeBibleTranslationPreference(verseTranslation)
-  }, [verseTranslation])
 
   // load catalog entries by selected song language
   useEffect(()=>{
@@ -444,25 +364,6 @@ export default function Setlist(){
     if (!s) return
     const entry = createSelection({ id: s.id, toKey: s.originalKey || s.key || 'C' })
     setList(prev => [...prev, entry])
-  }
-  async function addVerseFromInput(input){
-    const parsed = parseVerseReference(input, { translation: verseTranslation })
-    if (parsed.error) {
-      setVerseError(t('setlist.checkVerse'))
-      return false
-    }
-    const validation = await validateVerseReference(parsed)
-    if (!validation.ok) {
-      setVerseError(validation.message)
-      return false
-    }
-    const entry = createSelection({ id: parsed.id, toKey: '' })
-    if (!entry) return false
-    setList(prev => [...prev, entry])
-    setVerseInput('')
-    setVerseError('')
-    setVerseOpen(false)
-    return true
   }
   function removeSong(uid){
     setList(prev => prev.filter(x => x.uid !== uid))
@@ -757,91 +658,8 @@ async function exportPdf() {
   try {
     const { downloadMultiSongPdf } = await loadPdfLib();
     const songs = [];
-    const chapterCache = verseCacheRef.current;
-
-    async function loadChapter(translationId, book, chapter){
-      const key = `${translationId}::${book}::${chapter}`
-      if (chapterCache.has(key)) return chapterCache.get(key)
-      try {
-        const json = await fetchBibleChapter({ translationId, book, chapter })
-        chapterCache.set(key, json)
-        return json
-      } catch {
-        chapterCache.set(key, null)
-        return null
-      }
-    }
-
-    function listVerseNumbers(chapterData){
-      return Object.keys(chapterData?.verses || {})
-        .map((n) => Number(n))
-        .filter((n) => !Number.isNaN(n))
-        .sort((a, b) => a - b)
-    }
 
     for (const sel of list) {
-      if (isVerseId(sel.id)) {
-        const parsed = parseVerseId(sel.id)
-        if (!parsed) {
-          showToast(t('setlist.checkVerse'))
-          continue
-        }
-        try {
-          const segments = parsed.segments || []
-          const multiChapter = segments.length > 1
-          const lines = []
-          const seen = new Set()
-
-          for (const segment of segments) {
-            const chapterData = await loadChapter(parsed.translation, String(parsed.bookNumber), segment.chapter)
-            if (!chapterData?.verses) continue
-            const verseMap = chapterData.verses || {}
-            const allNums = listVerseNumbers(chapterData)
-            const max = allNums.length ? allNums[allNums.length - 1] : 0
-            if (!segment.ranges) {
-              for (const num of allNums) {
-                const key = `${segment.chapter}:${num}`
-                if (seen.has(key)) continue
-                const text = verseMap[String(num)]
-                if (!text) continue
-                const label = multiChapter ? `${segment.chapter}:${num}` : `${num}`
-                lines.push({ plain: `${label} ${text}` })
-                seen.add(key)
-              }
-              continue
-            }
-            for (const range of segment.ranges) {
-              const start = range.start
-              const end = range.end == null ? max : range.end
-              for (let v = start; v <= end; v += 1) {
-                const key = `${segment.chapter}:${v}`
-                if (seen.has(key)) continue
-                const text = verseMap[String(v)]
-                if (!text) continue
-                const label = multiChapter ? `${segment.chapter}:${v}` : `${v}`
-                lines.push({ plain: `${label} ${text}` })
-                seen.add(key)
-              }
-            }
-          }
-
-          if (!lines.length) {
-            showToast(t('setlist.noVersesFound', { ref: parsed.refDisplay }))
-            continue
-          }
-
-          songs.push({
-            title: parsed.refDisplay || parsed.id,
-            key: '',
-            pdfColumns: 1,
-            sections: [{ label: '', lines }],
-          })
-        } catch (err) {
-          console.error(err)
-          showToast(t('setlist.failedLoadVerse', { ref: parsed.refDisplay }))
-        }
-        continue
-      }
       const s = getSongById(sel.id)
       if (!s) continue;
 
@@ -922,59 +740,6 @@ async function exportPdf() {
       await navigator.clipboard.writeText(url)
       try { showToast?.(t('setlist.linkCopied')) } catch {}
     } catch (e) { alert(t('setlist.failedCopy')) }
-  }
-
-  useEffect(() => {
-    if (!verseOpen) return
-    const rawBook = splitVerseInput(verseInput).bookPart
-    const suggestion = suggestBookName(rawBook)
-    setVerseSuggest(suggestion || '')
-  }, [verseInput, verseOpen])
-
-  async function validateVerseReference(parsed){
-    if (!parsed?.book || !parsed?.segments?.length) return { ok: false, message: t('setlist.checkVerse') }
-
-    async function loadChapter(translationId, book, chapter){
-      const key = `${translationId}::${book}::${chapter}`
-      const cache = verseCacheRef.current
-      if (cache.has(key)) return cache.get(key)
-      try {
-        const json = await fetchBibleChapter({ translationId, book, chapter })
-        cache.set(key, json)
-        return json
-      } catch {
-        cache.set(key, null)
-        return null
-      }
-    }
-
-    let foundAny = false
-    for (const segment of parsed.segments) {
-      const chapterData = await loadChapter(parsed.translation, String(parsed.bookNumber), segment.chapter)
-      if (!chapterData?.verses) return { ok: false, message: t('setlist.noVerseFound') }
-      const verseMap = chapterData.verses || {}
-      const verseKeys = Object.keys(verseMap)
-      if (!segment.ranges) {
-        if (verseKeys.length) foundAny = true
-        continue
-      }
-      for (const range of segment.ranges) {
-        const start = range.start
-        const end = range.end ?? start
-        if (!verseMap[String(start)] || !verseMap[String(end)]) {
-          return { ok: false, message: t('setlist.checkVerse') }
-        }
-        foundAny = true
-      }
-    }
-    if (!foundAny) return { ok: false, message: t('setlist.noVerseFound') }
-    return { ok: true }
-  }
-
-  function applyVerseSuggestion(){
-    const completion = buildVerseCompletion(verseInput, verseSuggest)
-    if (!completion) return
-    setVerseInput(completion.composed)
   }
 
   async function bundlePptx(){
@@ -1138,78 +903,6 @@ async function exportPdf() {
           </div>
         </div>
       ) : null}
-      {/* Add Verse modal */}
-      {verseOpen ? (
-        <div style={{ position:'fixed', inset:0, display:'flex', alignItems:'center', justifyContent:'center', background:'rgba(0,0,0,.45)', zIndex: 90 }} role="dialog" aria-modal="true">
-          <div style={{ background:'var(--card)', color:'var(--text)', border:'1px solid var(--line)', borderRadius:10, padding:16, width:'min(560px, 92vw)' }}>
-            <h3 style={{ marginTop: 0, marginBottom: 8 }}>{t('setlist.addVerseTitle')}</h3>
-            <div className="gc-field" style={{ margin:'8px 0' }}>
-              <div style={{ display:'grid', gridTemplateColumns:'1fr minmax(220px, 34%)', gap:8, alignItems:'center' }}>
-                <label className="gc-label" htmlFor="verse-input">{t('setlist.bibleVerse')}</label>
-                <label className="gc-label" htmlFor="verse-translation">{t('setlist.translation')}</label>
-                <div style={{ position:'relative' }}>
-                  {(() => {
-                    const completion = buildVerseCompletion(verseInput, verseSuggest)
-                    if (!completion) return null
-                    return (
-                    <div
-                      aria-hidden
-                      style={{
-                        position:'absolute',
-                        inset:0,
-                        padding:'10px 12px',
-                        fontFamily:'var(--gc-font-family)',
-                        color:'var(--gc-text-secondary)',
-                        lineHeight:'normal',
-                        whiteSpace:'pre',
-                        overflow:'hidden',
-                        textOverflow:'ellipsis',
-                        pointerEvents:'none',
-                      }}
-                    >
-                      <span style={{ visibility:'hidden' }}>{completion.prefix}</span>
-                      <span>{completion.remainder}</span>
-                    </div>
-                    )
-                  })()}
-                  <input
-                    id="verse-input"
-                    value={verseInput}
-                    onChange={(e) => { setVerseInput(e.target.value); if (verseError) setVerseError('') }}
-                    placeholder={t('setlist.versePlaceholder')}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Tab' && buildVerseCompletion(verseInput, verseSuggest)) {
-                        e.preventDefault()
-                        applyVerseSuggestion()
-                        return
-                      }
-                      if (e.key === 'Enter') {
-                        e.preventDefault()
-                        addVerseFromInput(verseInput)
-                      }
-                    }}
-                    className="gc-input"
-                    style={{ width:'100%', background:'transparent', position:'relative', zIndex:1, lineHeight:'normal' }}
-                  />
-                </div>
-                <BibleTranslationPicker
-                  id="verse-translation"
-                  value={verseTranslation}
-                  groups={translationGroups}
-                  onChange={setVerseTranslation}
-                  ariaLabel={t('setlist.translationAria')}
-                  fullWidth
-                />
-              </div>
-            </div>
-            {verseError ? <div className="meta" style={{ color:'var(--gc-danger)', marginTop: 6 }}>{verseError}</div> : null}
-            <div className="row" style={{ justifyContent:'flex-end', gap:8, marginTop: 12 }}>
-              <Button onClick={() => { setVerseOpen(false); setVerseError('') }}>{t('setlist.cancel')}</Button>
-              <Button variant="primary" onClick={() => addVerseFromInput(verseInput)}>{t('setlist.addVerse')}</Button>
-            </div>
-          </div>
-        </div>
-      ) : null}
       <Busy busy={busy} />
       <PageHeader title={t('setlist.title')} />
 
@@ -1218,7 +911,7 @@ async function exportPdf() {
         <Toolbar className="gc-card" style={{ marginTop: 8, position: 'static' }}>
           <div className="builder-mobile-actions" style={{ width:'100%', display:'flex', gap:8, alignItems:'center' }}>
             <Button variant="primary" onClick={exportPdf} onMouseEnter={prefetchPdf} onFocus={prefetchPdf} disabled={busy || list.length===0} title={t('setlist.exportPdfTooltip')} iconLeft={<DownloadIcon />}>{t('setlist.exportPdfShort')}</Button>
-            <Button as={Link} variant="primary" to={(list.length ? `/worship/${list.map(s=> encodeURIComponent(s.id)).join(',')}?toKeys=${list.map(sel => encodeURIComponent(sel.toKey || '')).join(',')}` : '/worship')} title={t('setlist.worshipModeTooltip')} iconLeft={<MediaIcon />}>{t('setlist.worshipModeShort')}</Button>
+            <Button as={Link} variant="primary" to={(list.length ? `/worship/${list.map(s=> encodeURIComponent(s.id)).join(',')}?toKeys=${list.map(sel => encodeURIComponent(sel.toKey || '')).join(',')}` : '/worship')} title={t('setlist.presentationModeTooltip')} iconLeft={<MediaIcon />}>{t('setlist.presentationModeShort')}</Button>
             <Button iconOnly title={t('setlist.moreActions')} aria-label={t('setlist.moreActions')} onClick={() => setMobileActionsOpen(true)} iconLeft={<SlidersIcon />} />
           </div>
         </Toolbar>
@@ -1269,10 +962,9 @@ async function exportPdf() {
                   </div>
                 ) : null}
               </div>
-              <Button variant="primary" size="md" as={Link} to={(list.length ? `/worship/${list.map(s=> encodeURIComponent(s.id)).join(',')}?toKeys=${list.map(sel => encodeURIComponent(sel.toKey || '')).join(',')}` : '/worship')} title={t('setlist.worshipModeTooltip')} iconLeft={<MediaIcon />}> <span className="text-when-wide">{t('setlist.worshipMode')}</span><span className="text-when-narrow">{t('setlist.worshipModeShort')}</span></Button>
+              <Button variant="primary" size="md" as={Link} to={(list.length ? `/worship/${list.map(s=> encodeURIComponent(s.id)).join(',')}?toKeys=${list.map(sel => encodeURIComponent(sel.toKey || '')).join(',')}` : '/worship')} title={t('setlist.presentationModeTooltip')} iconLeft={<MediaIcon />}> <span className="text-when-wide">{t('setlist.presentationMode')}</span><span className="text-when-narrow">{t('setlist.presentationModeShort')}</span></Button>
               <PushToTelegramButton
                 items={list
-                  .filter(sel => !isVerseId(sel.id))
                   .map(sel => {
                     const song = getSongById(sel.id)
                     return song?.dbId ? { song_id: song.dbId, key: sel.toKey || song.originalKey || '' } : null
@@ -1360,12 +1052,10 @@ async function exportPdf() {
             <div className="card setlist-pane">
               <div className={["BuilderHeader", "section-header", isStacked ? 'no-sticky' : ''].filter(Boolean).join(' ')} style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:8 }}>
                 <strong>{t('setlist.currentSetlistCount', { count: list.length })}</strong>
-                <Button size="sm" variant="secondary" onClick={() => { setVerseOpen(true); setVerseError('') }} iconLeft={<PlusIcon />}>{t('setlist.scripture')}</Button>
               </div>
               <div className={["BuilderScroll", "setlist-scroll", "setlist-list", isStacked ? 'no-pane-scroll' : 'pane-scroll', 'pane--currentSet'].join(' ')} style={{ marginTop: 6 }}>
                 <div style={{ display:'grid', gap:8 }}>
                 {list.map((sel, idx)=>{
-                  const isVerse = isVerseId(sel.id)
                   const dragHandlers = {
                     draggable: true,
                     onDragStart: (e) => { e.dataTransfer.setData('text/plain', String(sel.uid || sel.id)); e.dataTransfer.effectAllowed = 'move' },
@@ -1375,25 +1065,6 @@ async function exportPdf() {
                     onDragEnd: () => setDragOverIdx(null),
                   }
                   const rowClass = `setlist-row ${dragOverIdx === idx ? 'is-drag-over' : ''}`.trim()
-                  if (isVerse) {
-                    const parsed = parseVerseId(sel.id)
-                    const title = parsed?.refDisplay || sel.id
-                    const translationLabel = resolveBibleTranslationLabel(parsed?.translation, bibleTranslations)
-                    return (
-                      <SongCard
-                        key={sel.uid || `${sel.id}-${idx}`}
-                        className={rowClass}
-                        {...dragHandlers}
-                        title={title}
-                        subtitle={translationLabel}
-                        rightSlot={
-                          <div className="setlist-row-actions">
-                            <Button onClick={()=> removeSong(sel.uid)} title={t('setlist.remove')} iconLeft={<MinusIcon />} iconOnly style={{ color:'#b91c1c' }} />
-                          </div>
-                        }
-                      />
-                    )
-                  }
                   const s = getSongById(sel.id)
                   if(!s) return null
                   return (
@@ -1426,15 +1097,6 @@ async function exportPdf() {
             <h2 style={{fontSize:'20pt', margin:'0 0 8pt 0'}}>{name}</h2>
             <ol style={{fontSize:'12pt', lineHeight:1.4, paddingLeft:'1.2em'}}>
               {list.map((sel, idxPrint) => {
-                if (isVerseId(sel.id)) {
-                  const parsed = parseVerseId(sel.id)
-                  const translationLabel = resolveBibleTranslationLabel(parsed?.translation, bibleTranslations)
-                  return (
-                    <li key={sel.uid || `${sel.id}-${idxPrint}`}>
-                      {parsed?.refDisplay || sel.id} ({translationLabel})
-                    </li>
-                  )
-                }
                 const s = getSongById(sel.id)
                 if (!s) return null
                 return (
@@ -1532,7 +1194,6 @@ async function exportPdf() {
         <div className="gc-mobile-actions">
           <PushToTelegramButton
             items={list
-              .filter(sel => !isVerseId(sel.id))
               .map(sel => {
                 const song = getSongById(sel.id)
                 return song?.dbId ? { song_id: song.dbId, key: sel.toKey || song.originalKey || '' } : null

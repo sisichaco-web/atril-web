@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import { supabase } from '../../lib/supabase'
 import { reviewSongSuggestion } from '@gracechords/core'
 import { useRole } from '../../hooks/useRole'
@@ -14,6 +15,7 @@ function formatDate(str) {
 }
 
 function MetadataDiff({ oldPayload, newPayload }) {
+  const { t } = useTranslation('editor')
   const FIELDS = [
     'title', 'artist', 'default_key', 'tempo', 'time_signature',
     'country', 'youtube_id', 'mp3_url', 'pptx_url', 'slug', 'tags',
@@ -29,7 +31,7 @@ function MetadataDiff({ oldPayload, newPayload }) {
 
   return (
     <div className="gc-suggestion-card__diff-section">
-      <div className="gc-suggestion-card__diff-title">Metadata changes</div>
+      <div className="gc-suggestion-card__diff-title">{t('metadataChanges')}</div>
       {diffs.map(f => (
         <div key={f} className="gc-suggestion-card__diff-row">
           <span className="gc-suggestion-card__diff-key">{f}</span>
@@ -51,6 +53,7 @@ function MetadataDiff({ oldPayload, newPayload }) {
 }
 
 function ContentDiff({ oldContent, newContent }) {
+  const { t } = useTranslation('editor')
   if (!oldContent && !newContent) return null
 
   const oldLines = (oldContent || '').split('\n')
@@ -75,7 +78,7 @@ function ContentDiff({ oldContent, newContent }) {
 
   return (
     <div className="gc-suggestion-card__diff-section">
-      <div className="gc-suggestion-card__diff-title">Content changes</div>
+      <div className="gc-suggestion-card__diff-title">{t('contentChanges')}</div>
       <div className="gc-suggestion-card__content-diff">
         {rows.map((row, i) => (
           <div
@@ -96,13 +99,14 @@ function ContentDiff({ oldContent, newContent }) {
 }
 
 function RejectionForm({ onSubmit, onCancel }) {
+  const { t } = useTranslation('editor')
   const [reason, setReason] = useState('')
 
   return (
     <div className="gc-rejection-form">
       <textarea
         className="gc-rejection-form__textarea"
-        placeholder="Reason for rejection (optional)..."
+        placeholder={t('rejectionReason')}
         value={reason}
         onChange={e => setReason(e.target.value)}
       />
@@ -112,14 +116,14 @@ function RejectionForm({ onSubmit, onCancel }) {
           className="gc-btn gc-btn--destructive gc-btn--sm"
           onClick={() => onSubmit(reason)}
         >
-          Confirm Rejection
+          {t('confirmRejection')}
         </button>
         <button
           type="button"
           className="gc-btn gc-btn--secondary gc-btn--sm"
           onClick={onCancel}
         >
-          Cancel
+          {t('cancel')}
         </button>
       </div>
     </div>
@@ -127,6 +131,7 @@ function RejectionForm({ onSubmit, onCancel }) {
 }
 
 function SuggestionCard({ suggestion, currentSong, onApproved, onRejected, onTouchUp, canDirectDelete }) {
+  const { t } = useTranslation('editor')
   const [rejecting, setRejecting] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -139,7 +144,7 @@ function SuggestionCard({ suggestion, currentSong, onApproved, onRejected, onTou
     setLoading(true)
     try {
       await reviewSongSuggestion(supabase, suggestion.id, 'approve')
-      showToast('Suggestion approved.')
+      showToast(t('suggestionApproved'))
       onApproved(suggestion.id)
     } catch (err) {
       showToast(`Error applying suggestion: ${err.message}`)
@@ -152,7 +157,7 @@ function SuggestionCard({ suggestion, currentSong, onApproved, onRejected, onTou
     setLoading(true)
     try {
       await reviewSongSuggestion(supabase, suggestion.id, 'reject', reason || null)
-      showToast('Suggestion rejected.')
+      showToast(t('suggestionRejected'))
       onRejected(suggestion.id)
     } catch (err) {
       showToast(`Error rejecting suggestion: ${err.message}`)
@@ -167,7 +172,7 @@ function SuggestionCard({ suggestion, currentSong, onApproved, onRejected, onTou
     <div className={`gc-suggestion-card${isDeletion ? ' gc-suggestion-card--deletion' : ''}`}>
       <div className={`gc-suggestion-card__header${isDeletion ? ' gc-suggestion-card__header--deletion' : ''}`}>
         <span className="gc-suggestion-card__proposer">
-          {suggestion.users?.display_name || 'Unknown user'}
+          {suggestion.users?.display_name || t('unknownUser')}
         </span>
         <span className="gc-suggestion-card__meta">{formatDate(suggestion.created_at)}</span>
         <span className={`gc-suggestion-card__badge gc-suggestion-card__badge--${suggestion.type}`}>
@@ -178,7 +183,7 @@ function SuggestionCard({ suggestion, currentSong, onApproved, onRejected, onTou
       <div className="gc-suggestion-card__body">
         {isDeletion && (
           <div className="gc-suggestion-card__deletion-warning">
-            ⚠ This suggestion requests deletion of this song. Admin approval required.
+            ⚠ {t('deletionWarning')}
           </div>
         )}
 
@@ -206,7 +211,7 @@ function SuggestionCard({ suggestion, currentSong, onApproved, onRejected, onTou
             onClick={handleApprove}
             disabled={loading}
           >
-            Approve
+            {t('approve')}
           </button>
         )}
         <button
@@ -215,7 +220,7 @@ function SuggestionCard({ suggestion, currentSong, onApproved, onRejected, onTou
           onClick={() => onTouchUp(suggestion)}
           disabled={loading}
         >
-          Touch Up
+          {t('touchUp')}
         </button>
         <button
           type="button"
@@ -223,7 +228,7 @@ function SuggestionCard({ suggestion, currentSong, onApproved, onRejected, onTou
           onClick={() => setRejecting(true)}
           disabled={loading}
         >
-          Reject
+          {t('reject')}
         </button>
       </div>
 
@@ -238,6 +243,7 @@ function SuggestionCard({ suggestion, currentSong, onApproved, onRejected, onTou
 }
 
 export default function SuggestionReviewPanel({ songId, currentSong, onApproved, onRejected, onTouchUp }) {
+  const { t } = useTranslation('editor')
   const { isAtLeast } = useRole()
   const [suggestions, setSuggestions] = useState([])
   const [loading, setLoading] = useState(false)
@@ -283,16 +289,16 @@ export default function SuggestionReviewPanel({ songId, currentSong, onApproved,
 
   return (
     <div className="gc-suggestion-review gc-portal-section">
-      <h2>Pending Suggestions</h2>
+      <h2>{t('pendingSuggestions')}</h2>
 
       {error && (
-        <p style={{ color: 'var(--gc-danger)' }}>Error loading suggestions: {error}</p>
+        <p style={{ color: 'var(--gc-danger)' }}>{t('suggestionsLoadError')}: {error}</p>
       )}
 
-      {loading && <p className="gc-suggestion-review__empty">Loading suggestions…</p>}
+      {loading && <p className="gc-suggestion-review__empty">{t('loadingSuggestions')}</p>}
 
       {!loading && !error && suggestions.length === 0 && (
-        <p className="gc-suggestion-review__empty">No suggestions to review</p>
+        <p className="gc-suggestion-review__empty">{t('noSuggestions')}</p>
       )}
 
       {suggestions.map(s => (

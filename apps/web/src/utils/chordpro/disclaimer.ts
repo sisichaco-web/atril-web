@@ -1,6 +1,6 @@
 import { getChordproCommentBlock, isDisclaimerEnabled } from '../../config/disclaimer'
 
-const MARKER = '# --- DISCLAIMER (GraceChords) ---'
+const MARKER = '# --- DISCLAIMER (Atril) ---'
 
 export function hasDisclaimerCommentBlock(text: string): boolean {
   return String(text || '').split(/\r?\n/).some(line => line.trim() === MARKER)

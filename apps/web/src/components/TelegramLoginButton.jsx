@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react'
 // because (a) it's not a secret and (b) the widget script reads `data-`
 // attributes set on its own <script> tag, so a single component instance is
 // enough — no need to thread it through env vars.
-const BOT_USERNAME = 'gracechords_bot'
+const BOT_USERNAME = 'atril_bot'
 
 // Telegram's widget injects a global callback (named by data-onauth) and
 // calls it with the auth payload. We assign a unique name per mount so two

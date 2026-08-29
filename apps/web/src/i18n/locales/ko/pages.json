@@ -2,7 +2,7 @@
   "_meta": { "reviewer": "", "reviewedAt": "", "needsReview": true },
   "posts": {
     "title": "게시글",
-    "subtitle": "소식, 공지 및 예배 자료",
+    "subtitle": "소식, 공지 및 밴드 소식",
     "refresh": "새로고침",
     "refreshAria": "게시글 새로고침",
     "updated": "업데이트 {{time}}",
@@ -53,9 +53,9 @@
     "pptZip": "PPT ZIP",
     "pptZipTooltip": "선택한 곡의 PPTX 묶음(ZIP) 내보내기",
     "pptZipDisabled": "PPTX 묶음을 내보내려면 곡을 추가하세요",
-    "worshipMode": "예배 모드",
-    "worshipModeShort": "예배",
-    "worshipModeTooltip": "예배 모드 열기",
+    "presentationMode": "프레젠테이션 모드",
+    "presentationModeShort": "발표",
+    "presentationModeTooltip": "프레젠테이션 모드 열기",
     "moreActions": "추가 작업",
     "actionsTitle": "셋리스트 작업",
     "savedSetsAction": "저장된 셋",
@@ -102,13 +102,6 @@
     "fieldOptional": "(선택)",
     "cancel": "취소",
     "update": "업데이트",
-    "addVerseTitle": "구절 추가",
-    "bibleVerse": "성경 구절",
-    "translation": "번역",
-    "versePlaceholder": "요한복음 3:16",
-    "checkVerse": "구절 참조를 확인해 주세요.",
-    "translationAria": "성경 번역 선택",
-    "noVerseFound": "구절을 찾을 수 없습니다.",
     "linkCopied": "링크가 복사되었습니다!",
     "failedCopy": "링크 복사에 실패했습니다",
     "signInToSaveToast": "셋리스트를 저장하려면 로그인하세요.",
@@ -131,8 +124,6 @@
     "combining": "결합 중…",
     "pptUnavailable": "{{title}} PPT 파일을 사용할 수 없습니다",
     "songsMissingPpt": "{{count}}개 곡의 PPT 파일이 없습니다",
-    "noVersesFound": "{{ref}}에 해당하는 구절이 없습니다",
-    "failedLoadVerse": "{{ref}} 불러오기에 실패했습니다",
     "failedProcess": "{{title}} 처리에 실패했습니다"
   },
   "songbook": {
@@ -187,13 +178,13 @@
     "translationAria": "성경 번역 선택"
   },
   "download": {
-    "metaTitle": "앱 다운로드 | GraceChords",
-    "metaDescription": "휴대폰에서 GraceChords를 사용하세요. 코드 악보와 셋리스트, 오늘의 말씀을 예배 인도하는 어디서나 함께합니다.",
-    "title": "GraceChords 다운로드",
+    "metaTitle": "앱 다운로드 | Atril",
+    "metaDescription": "휴대폰에서 Atril를 사용하세요. 코드 악보와 셋리스트, 오늘의 말씀을 예배 인도하는 어디서나 함께합니다.",
+    "title": "Atril 다운로드",
     "lede": "코드 악보와 셋리스트, 오늘의 말씀을 어디서나 함께하세요. 웹에서 쓰던 계정으로 모두 동기화됩니다.",
     "ios": {
       "title": "iPhone 및 iPad",
-      "body": "GraceChords를 App Store에서 지금 만나보세요.",
+      "body": "Atril를 App Store에서 지금 만나보세요.",
       "badgeAlt": "App Store에서 다운로드하기"
     },
     "android": {
@@ -204,7 +195,7 @@
     "qr": {
       "title": "휴대폰에서 열려면 스캔하세요",
       "body": "카메라로 코드를 비추면 이 페이지가 기기에서 열립니다.",
-      "alt": "gracechords.com/download로 연결되는 QR 코드"
+      "alt": "atril.com/download로 연결되는 QR 코드"
     }
   }
 }

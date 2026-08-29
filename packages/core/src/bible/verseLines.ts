@@ -1,4 +1,4 @@
-// Shared verse → renderable-lines resolver. Extracted from the web Worship Mode
+// Shared verse → renderable-lines resolver. Extracted from the web Live Mode
 // verse path so the session followers (web + native) and the native leader all
 // build the same `lines` shape from a parsed verse id. The chapter fetch is
 // injected so each platform uses its own anonymous Bible source (web same-origin

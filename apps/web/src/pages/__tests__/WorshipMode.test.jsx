@@ -24,9 +24,9 @@ vi.mock('../../hooks/useSongs', () => ({
   useSongs: () => ({ songs: songMock.songs, loading: false }),
 }))
 
-import WorshipMode from '../WorshipModePage'
+import LiveMode from '../LiveModePage'
 
-describe('WorshipMode', () => {
+describe('LiveMode', () => {
   beforeEach(() => {
     localStorage.clear()
     document.documentElement.removeAttribute('data-theme')
@@ -36,7 +36,7 @@ describe('WorshipMode', () => {
     render(
       <MemoryRouter initialEntries={[`/worship/abba`]}>
         <Routes>
-          <Route path="/worship/:songIds" element={<WorshipMode />} />
+          <Route path="/live/:songIds" element={<LiveMode />} />
         </Routes>
       </MemoryRouter>
     )
@@ -48,7 +48,7 @@ describe('WorshipMode', () => {
     render(
       <MemoryRouter initialEntries={[`/worship/abba,above-all`]}>
         <Routes>
-          <Route path="/worship/:songIds" element={<WorshipMode />} />
+          <Route path="/live/:songIds" element={<LiveMode />} />
         </Routes>
       </MemoryRouter>
     )
@@ -62,7 +62,7 @@ describe('WorshipMode', () => {
     render(
       <MemoryRouter initialEntries={[`/worship/abba`]}>
         <Routes>
-          <Route path="/worship/:songIds" element={<WorshipMode />} />
+          <Route path="/live/:songIds" element={<LiveMode />} />
         </Routes>
       </MemoryRouter>
     )
@@ -79,7 +79,7 @@ describe('WorshipMode', () => {
     render(
       <MemoryRouter initialEntries={[`/worship/abba`]}>
         <Routes>
-          <Route path="/worship/:songIds" element={<WorshipMode />} />
+          <Route path="/live/:songIds" element={<LiveMode />} />
         </Routes>
       </MemoryRouter>
     )
@@ -90,14 +90,14 @@ describe('WorshipMode', () => {
     fireEvent.click(btn)
     const after = document.documentElement.getAttribute('data-theme')
     expect(after && after !== before).toBe(true)
-    expect(['light','dark']).toContain(localStorage.getItem('gracechords.theme'))
+    expect(['light','dark']).toContain(localStorage.getItem('atril.theme'))
   })
 
   it('uses PDF pt window for fit (font size from {16..12})', async () => {
     render(
       <MemoryRouter initialEntries={[`/worship/abba`]}>
         <Routes>
-          <Route path="/worship/:songIds" element={<WorshipMode />} />
+          <Route path="/live/:songIds" element={<LiveMode />} />
         </Routes>
       </MemoryRouter>
     )

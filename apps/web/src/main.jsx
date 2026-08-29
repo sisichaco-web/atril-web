@@ -70,7 +70,7 @@ function resetServiceWorkerIfRequested(){
       await Promise.all(registrations.map((registration) => registration.unregister()))
       if ('caches' in window) {
         const keys = await caches.keys()
-        await Promise.all(keys.filter((key) => key.startsWith('gracechords-')).map((key) => caches.delete(key)))
+        await Promise.all(keys.filter((key) => key.startsWith('atril-')).map((key) => caches.delete(key)))
       }
     } catch {}
 

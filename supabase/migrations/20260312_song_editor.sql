@@ -26,33 +26,36 @@ create table song_suggestions (
 alter table song_suggestions enable row level security;
 
 -- Collaborator+ can insert
+drop policy if exists "collab_insert" on song_suggestions;
 create policy "collab_insert" on song_suggestions
   for insert with check (
     exists (
       select 1 from public.users
       where id = auth.uid()
-      and global_role in ('collaborator','editor','admin','owner')
+      and role in ('collaborator','editor','admin','owner')
     )
   );
 
 -- Suggester can read their own; Editor+ can read all
+drop policy if exists "read_suggestions" on song_suggestions;
 create policy "read_suggestions" on song_suggestions
   for select using (
     suggested_by = auth.uid()
     or exists (
       select 1 from public.users
       where id = auth.uid()
-      and global_role in ('editor','admin','owner')
+      and role in ('editor','admin','owner')
     )
   );
 
 -- Editor+ can update status (approve/reject)
+drop policy if exists "editor_update" on song_suggestions;
 create policy "editor_update" on song_suggestions
   for update using (
     exists (
       select 1 from public.users
       where id = auth.uid()
-      and global_role in ('editor','admin','owner')
+      and role in ('editor','admin','owner')
     )
   );
 
@@ -66,6 +69,8 @@ drop table if exists song_proposals cascade;
 -- ---------------------------------------------------------------------------
 -- 1c. Create editor_audit_log
 -- ---------------------------------------------------------------------------
+drop table if exists editor_audit_log cascade;
+
 create table editor_audit_log (
   id               uuid        primary key default gen_random_uuid(),
   actor_id         uuid        references public.users(id) on delete set null,
@@ -81,15 +86,17 @@ create table editor_audit_log (
 alter table editor_audit_log enable row level security;
 
 -- Admin+ can read
+drop policy if exists "admin_read_audit" on editor_audit_log;
 create policy "admin_read_audit" on editor_audit_log
   for select using (
     exists (
       select 1 from public.users
       where id = auth.uid()
-      and global_role in ('admin','owner')
+      and role in ('admin','owner')
     )
   );
 
 -- Any authenticated user can insert (controlled in app logic)
+drop policy if exists "auth_insert_audit" on editor_audit_log;
 create policy "auth_insert_audit" on editor_audit_log
   for insert with check (auth.uid() is not null);

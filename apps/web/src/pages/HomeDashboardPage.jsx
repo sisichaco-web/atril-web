@@ -2,17 +2,6 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
-import heroDarkPng from '../assets/dashboard-hero-worship-angled.png'
-import heroLightPng from '../assets/dashboard-hero-worship-angled-light.png'
-import heroDarkWebp from '../assets/dashboard-hero-worship-angled.webp'
-import heroDarkWebp1200 from '../assets/dashboard-hero-worship-angled-1200.webp'
-import heroDarkWebp960 from '../assets/dashboard-hero-worship-angled-960.webp'
-import heroDarkWebp768 from '../assets/dashboard-hero-worship-angled-768.webp'
-import heroLightWebp from '../assets/dashboard-hero-worship-angled-light.webp'
-import heroLightWebp1200 from '../assets/dashboard-hero-worship-angled-light-1200.webp'
-import heroLightWebp960 from '../assets/dashboard-hero-worship-angled-light-960.webp'
-import heroLightWebp768 from '../assets/dashboard-hero-worship-angled-light-768.webp'
-import heroLightWebp640 from '../assets/dashboard-hero-worship-angled-light-640.webp'
 import { currentTheme } from '../utils/app/theme'
 import { useSongs } from '../hooks/useSongs'
 import { fetchPosts } from '../hooks/usePosts'
@@ -27,7 +16,7 @@ import {
 } from '../utils/songs/songCatalog'
 import { searchSongs } from '../utils/songs/search'
 
-const SITE_URL = 'https://gracechords.com'
+const SITE_URL = 'https://atril.com'
 const OG_IMAGE_URL = `${SITE_URL}/favicon.ico`
 const MAX_SUGGESTIONS = 5
 
@@ -123,27 +112,12 @@ export default function HomeDashboard(){
   const songbookQuickActions = useMemo(() => ([
     { id: 'random10SongCollection', title: t('actions.randomTenSong.title'), desc: t('actions.randomTenSong.desc') },
     { id: 'sendMeSongbook', title: t('actions.sendMeSongbook.title'), desc: t('actions.sendMeSongbook.desc') },
-    { id: 'graceChordsSongbook', title: t('actions.graceChordsSongbook.title'), desc: t('actions.graceChordsSongbook.desc') }
+    { id: 'atrilSongbook', title: t('actions.atrilSongbook.title'), desc: t('actions.atrilSongbook.desc') }
   ]), [t])
 
   const [songAction] = useState(() => pickRandom(songViewQuickActions))
   const [setlistAction] = useState(() => pickRandom(setlistQuickActions))
   const [songbookAction] = useState(() => pickRandom(songbookQuickActions))
-  const heroImgPng = theme === 'light' ? heroLightPng : heroDarkPng
-  const heroSrcSet = theme === 'light'
-    ? [
-        `${heroLightWebp640} 640w`,
-        `${heroLightWebp768} 768w`,
-        `${heroLightWebp960} 960w`,
-        `${heroLightWebp1200} 1200w`,
-        `${heroLightWebp} 1318w`,
-      ].join(', ')
-    : [
-        `${heroDarkWebp768} 768w`,
-        `${heroDarkWebp960} 960w`,
-        `${heroDarkWebp1200} 1200w`,
-        `${heroDarkWebp} 1318w`,
-      ].join(', ')
 
   function handleSongAction(){
     if (!songAction) return
@@ -165,7 +139,7 @@ export default function HomeDashboard(){
   }
 
   function handleContribute(){
-    try { window.open('https://github.com/rwm6857/GraceChords', '_blank', 'noopener,noreferrer') } catch {}
+    try { window.open('https://github.com/rwm6857/Atril', '_blank', 'noopener,noreferrer') } catch {}
   }
 
   function findExactMatch(term){
@@ -303,13 +277,13 @@ export default function HomeDashboard(){
   return (
     <div className="HomeDashboard">
       <Helmet>
-        <title>GraceChords — Welcome</title>
-        <meta name="description" content="Free, open-source worship tools for churches and worshippers. Browse songs, setlists, songbooks, and resources." />
+        <title>Atril — Welcome</title>
+        <meta name="description" content="Free, open-source herramienta musicals for churches and worshippers. Browse songs, setlists, songbooks, and resources." />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="GraceChords — Welcome" />
-        <meta property="og:description" content="Free, open-source worship tools for churches and worshippers." />
+        <meta property="og:title" content="Atril — Welcome" />
+        <meta property="og:description" content="Free, open-source herramienta musicals for churches and worshippers." />
         <meta property="og:url" content={`${SITE_URL}/`} />
-        <meta property="og:site_name" content="GraceChords" />
+        <meta property="og:site_name" content="Atril" />
         <meta property="og:image" content={OG_IMAGE_URL} />
         <link rel="canonical" href={`${SITE_URL}/`} />
       </Helmet>
@@ -317,14 +291,8 @@ export default function HomeDashboard(){
       <section className="home-hero">
         {/* Inline picture keeps hero discoverable for LCP/PSI and lets webp be chosen without extra PNG fetch */}
         <picture className="home-hero__bg" aria-hidden="true">
-          {/* Multiple WebP sizes to avoid "image larger than necessary" and improve mobile LCP */}
-          <source
-            type="image/webp"
-            srcSet={heroSrcSet}
-            sizes="100vw"
-          />
           <img
-            src={heroImgPng}
+            src="/logo/banda.jpeg"
             alt=""
             loading="eager"
             fetchPriority="high"

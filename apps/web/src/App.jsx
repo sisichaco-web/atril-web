@@ -5,7 +5,6 @@ import HomeDashboard from './pages/HomeDashboardPage'
 import Songs from './pages/SongsPage'
 import SongView from './pages/SongViewPage'
 const Setlist = lazyRoute(() => import('./pages/SetlistPage'))
-const ReadingsPage = lazyRoute(() => import('./pages/ReadingsPage'))
 import Bundle from './pages/BundlePage'
 const Songbook = lazyRoute(() => import('./pages/SongbookPage'))
 const About = lazyRoute(() => import('./pages/AboutPage'))
@@ -31,9 +30,9 @@ const ManagePostsPage = lazyRoute(() => import('./pages/portal/ManagePostsPage')
 const EditPostPage = lazyRoute(() => import('./pages/portal/EditPostPage'))
 import NavBar from './components/ui/Navbar'
 import RoleGuard from './components/auth/RoleGuard'
-import WorshipMode from './pages/WorshipModePage'
+import LiveMode from './pages/LiveModePage'
 import ErrorBoundary from './components/ErrorBoundary'
-import WorshipSetRoute from './pages/WorshipSetRoutePage'
+import LiveSetRoute from './pages/LiveSetRoutePage'
 import Toast from './components/Toast'
 import AnnouncementStrip from './components/AnnouncementStrip'
 import SiteDisclaimer from './components/SiteDisclaimer'
@@ -58,7 +57,6 @@ export default function App(){
             <Route path="/setlist" element={<Setlist />} />
             <Route path="/setlist/:songIds" element={<Setlist />} />
             <Route path="/set/:code" element={<Setlist />} />
-            <Route path="/reading" element={<ReadingsPage />} />
             <Route path="/bundle" element={<Bundle />} />
             <Route path="/songbook" element={<Songbook />} />
             <Route path="/profile" element={<ProfilePage />} />
@@ -78,8 +76,8 @@ export default function App(){
           <Route path="/auth/callback" element={<AuthCallbackPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
-          <Route path="/worship/:songIds?" element={<WorshipMode />} />
-          <Route path="/worship/set/:code" element={<WorshipSetRoute />} />
+          <Route path="/live/:songIds?" element={<LiveMode />} />
+          <Route path="/live/set/:code" element={<LiveSetRoute />} />
           <Route path="/s/:code" element={<SessionViewer />} />
           <Route path="*" element={<div className="container"><h1>Not found</h1><Link to="/">Back</Link></div>} />
         </Routes>

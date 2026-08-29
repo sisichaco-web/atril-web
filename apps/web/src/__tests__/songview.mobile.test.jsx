@@ -67,7 +67,7 @@ describe('SongView mobile dock', () => {
 
     // Download/Worship are icon-only on mobile but keep accessible names.
     const downloadBtn = screen.getByRole('button', { name: 'Download' })
-    const worshipLink = screen.getByRole('link', { name: 'Worship Mode' })
+    const worshipLink = screen.getByRole('link', { name: 'Live Mode' })
     expect(downloadBtn).toBeInTheDocument()
     expect(downloadBtn).toHaveClass('gc-btn--iconOnly')
     expect(worshipLink).toBeInTheDocument()

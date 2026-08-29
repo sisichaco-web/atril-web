@@ -2,7 +2,6 @@
   "_meta": { "reviewer": "Ryan", "reviewedAt": "5/3/26", "needsReview": false },
   "name": "Nombre",
   "serviceDate": "Fecha del servicio",
-  "bibleVerse": "Versículo bíblico",
   "saveSetlist": "Guardar repertorio",
   "updateSetlist": "Actualizar repertorio"
 }

@@ -1,5 +1,5 @@
 // src/utils/app/theme.js
-const STORAGE_KEY = 'gracechords.theme'
+const STORAGE_KEY = 'atril.theme'
 
 export function getStoredTheme() {
   const v = localStorage.getItem(STORAGE_KEY)

@@ -451,7 +451,7 @@ export async function renderMultiSongPdfBuffer(songs, opts = {}){
 export async function renderSongbookPdfDoc(songs = [], {
   includeTOC = true,
   coverImageDataUrl = null,
-  title = 'GraceChords Songbook',
+  title = 'Atril Songbook',
   subtitle = '',
   registerFonts,
 } = {}){

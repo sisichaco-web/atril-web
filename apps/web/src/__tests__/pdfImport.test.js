@@ -221,7 +221,7 @@ describe('alignment', () => {
 
 describe('page furniture and header', () => {
   it('recognises furniture', () => {
-    expect(isPageFurniture('www.gracechords.com')).toBe(true)
+    expect(isPageFurniture('www.atril.com')).toBe(true)
     expect(isPageFurniture('CCLI Song #1234')).toBe(true)
     expect(isPageFurniture('Page 2 of 3')).toBe(true)
     expect(isPageFurniture('© 2019 Some Publisher')).toBe(true)
@@ -466,7 +466,7 @@ describe('buildSongDraft', () => {
     expect(sections[1].lines).toHaveLength(2)
   })
 
-  it('strips the footer its own PDF export draws, so a GraceChords chart round-trips', () => {
+  it('strips the footer its own PDF export draws, so a Atril chart round-trips', () => {
     const footer = 'All lyrics and music are the property of their respective owners. For personal worship and educational use only.'
     expect(isPageFurniture(footer)).toBe(true)
     const draft = buildSongDraft(

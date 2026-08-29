@@ -350,7 +350,7 @@ select{
   select{ min-height: var(--gc-control-h-mobile); }
 }
 
-/* Worship Mode: swipe hint snackbar */
+/* Live Mode: swipe hint snackbar */
 .worship__hint{
   position: fixed;
   left: 50%; top: 50%; transform: translate(-50%, -50%);

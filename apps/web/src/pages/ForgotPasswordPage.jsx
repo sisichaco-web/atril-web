@@ -1,20 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
+import AuthBranding from '../components/auth/AuthBranding'
 import '../styles/auth.css'
 
 export default function ForgotPasswordPage() {
-  const [isDark, setIsDark] = useState(
-    () => document.documentElement.dataset.theme === 'dark'
-  )
-  useEffect(() => {
-    const observer = new MutationObserver(() =>
-      setIsDark(document.documentElement.dataset.theme === 'dark')
-    )
-    observer.observe(document.documentElement, { attributeFilter: ['data-theme'] })
-    return () => observer.disconnect()
-  }, [])
-
   const [email, setEmail] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
@@ -22,7 +12,7 @@ export default function ForgotPasswordPage() {
   async function handleSubmit(e) {
     e.preventDefault()
     setSubmitting(true)
-    // VITE_SITE_URL should be set in your .env file (e.g. VITE_SITE_URL=https://gracechords.com)
+    // VITE_SITE_URL should be set in your .env file (e.g. VITE_SITE_URL=https://atril.com)
     const siteUrl = import.meta.env.VITE_SITE_URL || window.location.origin
     await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${siteUrl}/reset-password`,
@@ -36,11 +26,7 @@ export default function ForgotPasswordPage() {
     return (
       <div className="gc-auth-page">
         <div className="gc-auth-card">
-          <img
-            src={isDark ? '/gc-brand-wide-dark.svg' : '/gc-brand-wide-light.svg'}
-            alt="GraceChords"
-            className="gc-auth-card__wordmark"
-          />
+          <AuthBranding />
           <h1 className="gc-auth-card__title">Check your email</h1>
           <p className="gc-auth-card__subtitle" style={{ marginBottom: 0 }}>
             If an account exists with that email, you'll receive a reset link shortly.
@@ -57,11 +43,7 @@ export default function ForgotPasswordPage() {
   return (
     <div className="gc-auth-page">
       <div className="gc-auth-card">
-        <img
-          src={isDark ? '/gc-brand-wide-dark.svg' : '/gc-brand-wide-light.svg'}
-          alt="GraceChords"
-          className="gc-auth-card__wordmark"
-        />
+        <AuthBranding />
         <h1 className="gc-auth-card__title">Forgot password</h1>
         <p className="gc-auth-card__subtitle">
           Enter your email and we'll send you a reset link.

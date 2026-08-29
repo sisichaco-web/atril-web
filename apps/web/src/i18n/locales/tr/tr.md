@@ -1,4 +1,4 @@
-# GraceChords Glossary — `tr`
+# Atril Glossary — `tr`
 
 Locked-in terminology and convention decisions for the Turkish locale. Future revisions and translators should follow these unless Ryan explicitly changes them.
 
@@ -10,8 +10,8 @@ Locked-in terminology and convention decisions for the Turkish locale. Future re
 
 | English | Turkish | Note |
 |---|---|---|
-| GraceChords | GraceChords | Brand — never translate |
-| Worship Mode | Tapınma Modu | |
+| Atril | Atril | Brand — never translate |
+| Live Mode | Tapınma Modu | |
 | Song of the Day | Günün İlahisi | |
 | Daily Word | Kutsal Kitap | Deliberate localization — nav link points to a daily verse feature; "Kutsal Kitap" reads more universally than a literal "Günün Sözü" |
 | Quiet Time | Sessiz Zaman | Established in Turkish evangelical circles |
@@ -21,7 +21,7 @@ Locked-in terminology and convention decisions for the Turkish locale. Future re
 | Random Theme Set | Rastgele Tema Seti | |
 | Random 10-Song Collection | Rastgele 10 İlahilik Koleksiyon | |
 | "Send Me" Songbook | "Beni Gönder" İlahi Kitabı | Isaiah 6:8 reference |
-| GraceChords Songbook | GraceChords İlahi Kitabı | |
+| Atril Songbook | Atril İlahi Kitabı | |
 | Song Library | İlahi Kütüphanesi | |
 | Setlist Builder | Set Listesi Oluşturucu | |
 | Songbook Tool | İlahi Kitabı Aracı | |

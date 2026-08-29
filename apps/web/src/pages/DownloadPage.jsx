@@ -3,8 +3,8 @@ import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { AppleIcon, QrCodeIcon } from '../components/Icons'
 
-const SITE_URL = 'https://gracechords.com'
-const APP_STORE_URL = 'https://apps.apple.com/us/app/gracechords/id6787127446'
+const SITE_URL = 'https://atril.com'
+const APP_STORE_URL = 'https://apps.apple.com/us/app/atril/id6787127446'
 // public/ assets are served from the site root and referenced by URL, not
 // imported (matches SpriteAvatar's /sprites/ usage).
 const APP_STORE_BADGE = '/badges/app-store-badge.svg'
@@ -73,7 +73,7 @@ export default function DownloadPage(){
         {/* Encodes /download rather than the App Store listing, so the same
             code keeps working when Android ships. Regenerate with:
             npx qrcode -t svg -o public/badges/download-qr.svg -w 512 --qzone 2 \
-              "https://gracechords.com/download" */}
+              "https://atril.com/download" */}
         <img
           className="gc-download__qrImage"
           src={DOWNLOAD_QR}

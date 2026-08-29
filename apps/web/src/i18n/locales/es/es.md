@@ -1,4 +1,4 @@
-# GraceChords Glossary — `es`
+# Atril Glossary — `es`
 
 Locked-in terminology and convention decisions for the Spanish locale. Future revisions and translators should follow these unless Ryan explicitly changes them.
 
@@ -10,8 +10,8 @@ Locked-in terminology and convention decisions for the Spanish locale. Future re
 
 | English | Spanish | Note |
 |---|---|---|
-| GraceChords | GraceChords | Brand — never translate |
-| Worship Mode | Modo adoración | |
+| Atril | Atril | Brand — never translate |
+| Live Mode | Modo adoración | |
 | Song of the Day | Canción del día | |
 | Daily Word | Palabra del día | **Kept as native term** — universally used by Spanish-language Bible apps and church sites for daily devotional. Same outcome as Korean. Don't relocalize. |
 | Quiet Time | Tiempo a solas | "Tiempo a solas con Dios" is also valid; short form widely understood in evangelical context |
@@ -21,7 +21,7 @@ Locked-in terminology and convention decisions for the Spanish locale. Future re
 | Random Theme Set | Set de tema aleatorio | |
 | Random 10-Song Collection | Colección aleatoria de 10 canciones | |
 | "Send Me" Songbook | Cancionero "Envíame" | Isaiah 6:8 reference; Reina-Valera renders as "Heme aquí, envíame a mí" but "Envíame" alone is concise and recognizable |
-| GraceChords Songbook | Cancionero GraceChords | |
+| Atril Songbook | Cancionero Atril | |
 | Contribute | Contribuir | Infinitive, matches button-voice convention |
 | Song Library | Biblioteca de canciones | |
 | Setlist Builder | Creador de repertorios | "Repertorio" is the established term for setlist |

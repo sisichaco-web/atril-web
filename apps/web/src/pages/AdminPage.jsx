@@ -134,7 +134,7 @@ export default function AdminPage() {
 
   return (
     <div className="gc-portal-page container">
-      <Helmet><title>Admin Portal – GraceChords</title></Helmet>
+      <Helmet><title>Admin Portal – Atril</title></Helmet>
 
       <h1>Admin Portal</h1>
       <p className="gc-portal-page__subtitle">

@@ -1,9 +1,9 @@
 // Cookie-backed storage adapter for the Supabase auth client.
 //
 // By default supabase-js persists the session in localStorage, which is
-// isolated per-origin — so a login on gracechords.com is invisible to
-// tracks.gracechords.com and vice-versa. Storing the session in a cookie
-// scoped to the parent domain (`.gracechords.com`) instead makes it visible to
+// isolated per-origin — so a login on atril.com is invisible to
+// tracks.atril.com and vice-versa. Storing the session in a cookie
+// scoped to the parent domain (`.atril.com`) instead makes it visible to
 // every subdomain, giving single sign-on across both sites (and shared
 // sign-out). Supabase sessions can exceed the ~4KB per-cookie limit, so values
 // are split across numbered chunk cookies and reassembled on read.
@@ -23,9 +23,9 @@ const hasDocument = typeof document !== 'undefined'
 
 function parentDomainAttr() {
   if (typeof location === 'undefined') return ''
-  // Only pin to the shared parent domain on gracechords.com hosts; on localhost
+  // Only pin to the shared parent domain on atril.com hosts; on localhost
   // / preview deploys fall back to a host-only cookie so dev still works.
-  return /(^|\.)gracechords\.com$/.test(location.hostname) ? '; domain=.gracechords.com' : ''
+  return /(^|\.)atril\.com$/.test(location.hostname) ? '; domain=.atril.com' : ''
 }
 
 function secureAttr() {

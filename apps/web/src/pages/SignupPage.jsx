@@ -4,6 +4,7 @@ import { useTranslation, Trans } from 'react-i18next'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../hooks/useAuth'
 import SpritePicker from '../components/ui/SpritePicker'
+import AuthBranding from '../components/auth/AuthBranding'
 import { showToast } from '../utils/app/toast'
 import PasswordStrengthPopover from '../components/auth/PasswordStrengthPopover'
 import '../styles/auth.css'
@@ -25,17 +26,6 @@ export default function SignupPage() {
   const navigate = useNavigate()
   const location = useLocation()
   const redirectTo = new URLSearchParams(location.search).get('redirect') || '/'
-
-  const [isDark, setIsDark] = useState(
-    () => document.documentElement.dataset.theme === 'dark'
-  )
-  React.useEffect(() => {
-    const observer = new MutationObserver(() =>
-      setIsDark(document.documentElement.dataset.theme === 'dark')
-    )
-    observer.observe(document.documentElement, { attributeFilter: ['data-theme'] })
-    return () => observer.disconnect()
-  }, [])
 
   const [displayName, setDisplayName] = useState('')
   const [email, setEmail] = useState('')
@@ -96,11 +86,7 @@ export default function SignupPage() {
     return (
       <div className="gc-auth-page">
         <div className="gc-auth-card" style={{ maxWidth: 480 }}>
-          <img
-            src={isDark ? '/gc-brand-wide-dark.svg' : '/gc-brand-wide-light.svg'}
-            alt="GraceChords"
-            className="gc-auth-card__wordmark"
-          />
+          <AuthBranding />
           <div className="gc-signup-confirm">
             <div className="gc-signup-confirm__icon" aria-hidden="true">✉️</div>
             <h1 className="gc-auth-card__title">{t('checkYourEmail')}</h1>
@@ -126,12 +112,8 @@ export default function SignupPage() {
   return (
     <div className="gc-auth-page">
       <div className="gc-auth-card" style={{ maxWidth: 480 }}>
-        <img
-          src={isDark ? '/gc-brand-wide-dark.svg' : '/gc-brand-wide-light.svg'}
-          alt="GraceChords"
-          className="gc-auth-card__wordmark"
-        />
-        <h1 className="gc-auth-card__title">{t('joinGraceChords')}</h1>
+        <AuthBranding />
+        <h1 className="gc-auth-card__title">{t('joinAtril')}</h1>
         <p className="gc-auth-card__subtitle">{t('createYourAccount')}</p>
 
         <form onSubmit={handleSubmit} className="gc-auth-form">

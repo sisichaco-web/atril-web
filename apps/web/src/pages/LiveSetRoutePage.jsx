@@ -3,7 +3,7 @@ import { useParams, Navigate } from 'react-router-dom'
 import { decodeSet } from '../utils/setlists/setcode'
 import { useSongs } from '../hooks/useSongs'
 
-export default function WorshipSetRoute(){
+export default function LiveSetRoute(){
   const { code } = useParams()
   const { songs } = useSongs()
   const target = useMemo(() => {

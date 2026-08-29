@@ -17,8 +17,8 @@ export default function PrivacyPage() {
   return (
     <div className="container gc-post-detail">
       <Helmet>
-        <title>Privacy Policy · GraceChords</title>
-        <meta name="description" content="How GraceChords handles your data and privacy." />
+        <title>Privacy Policy · Atril</title>
+        <meta name="description" content="How Atril handles your data and privacy." />
       </Helmet>
       <div
         className="gc-post-detail__content gc-prose"

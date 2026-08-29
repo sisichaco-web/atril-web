@@ -105,8 +105,8 @@ export default function PostsPage() {
   return (
     <div className="gc-posts-page container">
       <Helmet>
-        <title>Posts · GraceChords</title>
-        <meta name="description" content="News, announcements and worship resources from GraceChords." />
+        <title>Posts · Atril</title>
+        <meta name="description" content="News, announcements and worship resources from Atril." />
       </Helmet>
 
       <header className="gc-posts-page__header">

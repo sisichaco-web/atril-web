@@ -98,7 +98,7 @@ export default function PostDetailPage() {
   return (
     <div className="gc-post-detail container">
       <Helmet>
-        <title>{post.title} · GraceChords</title>
+        <title>{post.title} · Atril</title>
         {post.excerpt && <meta name="description" content={post.excerpt} />}
         {post.featured_image_url && <meta property="og:image" content={post.featured_image_url} />}
       </Helmet>

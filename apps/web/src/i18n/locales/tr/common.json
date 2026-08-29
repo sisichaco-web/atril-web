@@ -1,6 +1,6 @@
 {
   "_meta": { "reviewer": "", "reviewedAt": "", "needsReview": true },
-  "appName": "GraceChords",
+  "appName": "Atril",
   "save": "Kaydet",
   "cancel": "İptal",
   "delete": "Sil",
@@ -24,17 +24,17 @@
   "or": "veya",
   "continueWithGoogle": "Google ile devam et",
   "footer": {
-    "disclaimerBefore": "Tüm sözler ilgili sahiplerine aittir. GraceChords yalnızca kişisel ve eğitim amaçlı kullanım için araçlar sağlar. Hak sahipleri, kaldırma talepleri için ",
+    "disclaimerBefore": "Tüm sözler ilgili sahiplerine aittir. Atril yalnızca kişisel ve eğitim amaçlı kullanım için araçlar sağlar. Hak sahipleri, kaldırma talepleri için ",
     "disclaimerLink": "bize e-posta gönderin",
     "disclaimerAfter": ".",
-    "download": "GraceChords uygulamasını edinin",
+    "download": "Atril uygulamasını edinin",
     "copyright": "© {{range}} Ryan Moore. Tüm hakları saklıdır."
   },
   "announcement": {
     "regionLabel": "Site duyurusu",
     "dismiss": "Duyuruyu kapat",
     "iosLaunch": {
-      "message": "GraceChords artık App Store'da.",
+      "message": "Atril artık App Store'da.",
       "cta": "Uygulamayı edinin"
     }
   }

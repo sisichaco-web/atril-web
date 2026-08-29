@@ -132,10 +132,10 @@ export default function Navbar(){
       <nav className="gc-navbar" ref={navRef as any}>
         <div className="gc-navbar__inner">
         {/* Readable text wordmark instead of an embedded-image logo, so the
-            app name "GraceChords" is present as real text for crawlers and
+            app name "Atril" is present as real text for crawlers and
             OAuth branding review (matches the app name on the consent screen). */}
-        <Link to="/" className="gc-brand" aria-label={t('graceChordsHome')}>
-          <span className="gc-brand__wordmark">GraceChords</span>
+        <Link to="/" className="gc-brand" aria-label={t('atrilHome')}>
+          <span className="gc-brand__wordmark">Atril</span>
         </Link>
         {/* Hamburger on mobile/tablet */}
         <button
@@ -154,7 +154,6 @@ export default function Navbar(){
           <Link to="/songs" className={`gc-navlink ${isActive('/songs') ? 'active':''}`} style={isActive('/songs') ? ({ color:'#ffffff', WebkitTextFillColor:'#ffffff' } as any) : undefined}>{t('songs')}</Link>
           <Link to="/setlist" className={`gc-navlink ${isActive('/setlist') ? 'active':''}`} onMouseEnter={() => import('../../pages/SetlistPage')} style={isActive('/setlist') ? ({ color:'#ffffff', WebkitTextFillColor:'#ffffff' } as any) : undefined}>{t('setlist')}</Link>
           <Link to="/songbook" className={`gc-navlink ${isActive('/songbook') ? 'active':''}`} onMouseEnter={() => import('../../pages/SongbookPage')} style={isActive('/songbook') ? ({ color:'#ffffff', WebkitTextFillColor:'#ffffff' } as any) : undefined}>{t('songbook')}</Link>
-          <Link to="/reading" className={`gc-navlink ${isActive('/reading') ? 'active':''}`} onMouseEnter={() => import('../../pages/ReadingsPage')} style={isActive('/reading') ? ({ color:'#ffffff', WebkitTextFillColor:'#ffffff' } as any) : undefined}>{t('dailyWord')}</Link>
           <Link to="/posts" className={`gc-navlink ${isActive('/posts') ? 'active':''}`} style={isActive('/posts') ? ({ color:'#ffffff', WebkitTextFillColor:'#ffffff' } as any) : undefined}>{t('blog')}</Link>
           {isLoggedIn && !hasMinRole('admin') && role === 'editor' && (
             <Link to="/editor" className={`gc-navlink ${isActive('/editor') ? 'active':''}`} style={isActive('/editor') ? ({ color:'#ffffff', WebkitTextFillColor:'#ffffff' } as any) : undefined}>{t('editorPortal')}</Link>
@@ -269,7 +268,6 @@ export default function Navbar(){
               <Link to="/songs" onClick={closeDrawer} className={`gc-navlink ${isActive('/songs') ? 'active':''}`}>{t('songs')}</Link>
               <Link to="/setlist" onClick={closeDrawer} className={`gc-navlink ${isActive('/setlist') ? 'active':''}`}>{t('setlist')}</Link>
               <Link to="/songbook" onClick={closeDrawer} className={`gc-navlink ${isActive('/songbook') ? 'active':''}`}>{t('songbook')}</Link>
-              <Link to="/reading" onClick={closeDrawer} className={`gc-navlink ${isActive('/reading') ? 'active':''}`}>{t('dailyWord')}</Link>
               <Link to="/posts" onClick={closeDrawer} className={`gc-navlink ${isActive('/posts') ? 'active':''}`}>{t('blog')}</Link>
 
               {isLoggedIn && hasMinRole('user') && (

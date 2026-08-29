@@ -1,9 +1,9 @@
 # Privacy Policy
 
 **Effective date:** July 4th, 2026
-**Applies to:** the GraceChords website ([https://gracechords.com](https://gracechords.com)) and the GraceChords mobile app (collectively, the "Service").
+**Applies to:** the Atril website ([https://atril.com](https://atril.com)) and the Atril mobile app (collectively, the "Service").
 
-GraceChords ("GraceChords," "we," "us," or "our") is a free, non-commercial worship tool operated by Ryan Moore, an individual based in the U.S. state of Georgia. We take your privacy seriously and collect as little information as the Service needs to work. This policy explains what we collect, why, and the choices and rights you have.
+Atril ("Atril," "we," "us," or "our") is a free, non-commercial herramienta musical operated by Ryan Moore, an individual based in the U.S. state of Georgia. We take your privacy seriously and collect as little information as the Service needs to work. This policy explains what we collect, why, and the choices and rights you have.
 
 We are not a commercial business and do not profit from your data. We do not sell it, share it for advertising, or use it to track you.
 
@@ -135,7 +135,7 @@ For reference, the only category of personal information we collect under the CC
 
 ### Exercising your rights
 
-You can exercise any of these rights — including deleting your account and data — by emailing **ryan@gracechords.com**. We will respond within the timeframes required by applicable law. We may need to verify your identity before acting on a request.
+You can exercise any of these rights — including deleting your account and data — by emailing **ryan@atril.com**. We will respond within the timeframes required by applicable law. We may need to verify your identity before acting on a request.
 
 ---
 
@@ -144,7 +144,7 @@ You can exercise any of these rights — including deleting your account and dat
 You may delete your account and associated data at any time:
 
 - **In the app:** through the in-app account deletion option in Settings.
-- **By email:** contact **ryan@gracechords.com** and we will delete your account.
+- **By email:** contact **ryan@atril.com** and we will delete your account.
 
 Deleting your account removes your personal information and content from the active Service, subject to the retention exceptions in Section 7.
 
@@ -152,7 +152,7 @@ Deleting your account removes your personal information and content from the act
 
 ## 11. Children's privacy
 
-The Service is not directed to children under 13, and we do not knowingly collect personal information from children under 13. If you believe a child under 13 has provided us personal information, contact **ryan@gracechords.com** and we will delete it.
+The Service is not directed to children under 13, and we do not knowingly collect personal information from children under 13. If you believe a child under 13 has provided us personal information, contact **ryan@atril.com** and we will delete it.
 
 If you are in a jurisdiction where the minimum age for data consent is higher than 13 (for example, parts of the EEA), you must meet your local minimum age, or have parental consent, to create an account.
 
@@ -178,6 +178,6 @@ We may update this policy from time to time. If we make material changes, we wil
 
 If you have any questions about this policy or your information, contact:
 
-**Ryan Moore — GraceChords**
-Email: **ryan@gracechords.com**
+**Ryan Moore — Atril**
+Email: **ryan@atril.com**
 Location: Georgia, USA

@@ -32,7 +32,7 @@
   background: inherit;
 }
 
-/* Override MDXEditor palette with GraceChords tokens */
+/* Override MDXEditor palette with Atril tokens */
 .gc-mdxeditor ._editorRoot_1e2ox_53{
   --basePageBg: var(--mdx-surface);
   --baseBase: var(--mdx-surface);

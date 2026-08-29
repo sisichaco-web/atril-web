@@ -2,7 +2,7 @@
 // an isolated cache namespace.
 const swUrl = new URL(self.location.href);
 const CACHE_VERSION = swUrl.searchParams.get('v') || 'dev';
-const CACHE_NAME = `gracechords-${CACHE_VERSION}`;
+const CACHE_NAME = `atril-${CACHE_VERSION}`;
 const STATIC_ASSETS = [
   '/fonts/NotoSans-Regular.ttf',
   '/fonts/NotoSans-Bold.ttf',

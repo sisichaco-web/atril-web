@@ -5,7 +5,7 @@ export default function About(){
     <div className="container">
       <h1>About</h1>
       <p style={{ marginTop: 8, opacity: 0.8 }}>
-        Coming soon. Learn more about GraceChords, its purpose, and how to contribute.
+        Coming soon. Learn more about Atril, its purpose, and how to contribute.
       </p>
     </div>
   )
