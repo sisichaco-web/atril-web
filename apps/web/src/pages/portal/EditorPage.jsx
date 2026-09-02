@@ -10,6 +10,7 @@ import { SearchIcon } from '../../components/Icons'
 import {
   submitSongSuggestion,
   canDirectWrite,
+  createPersonalSong,
   fetchPersonalSongById,
   updatePersonalSong,
   songRowToForm,
@@ -24,6 +25,7 @@ import ChordProEditor from '../../components/editor/ChordProEditor'
 import LivePreviewModal from '../../components/editor/LivePreviewModal'
 import ChordProGuideDrawer from '../../components/editor/ChordProGuideDrawer'
 import SuggestionReviewPanel from '../../components/editor/SuggestionReviewPanel'
+import PendingAdditionSuggestionsPanel from '../../components/editor/PendingAdditionSuggestionsPanel'
 import '../../styles/admin-portal.css'
 import '../../styles/editor.css'
 
@@ -437,61 +439,53 @@ function DesktopEditorPage() {
         return
       }
 
-      if (!canDirectWrite(role)) {
-        try {
+      // Every save — whether from a regular user or an editor+ — goes through
+      // the suggestion queue (song_suggestions + personal_songs). The
+      // PendingAdditionSuggestionsPanel will list it; editors can self-approve
+      // with one click, regular users wait for an editor's review.
+      try {
+        // Editor+ without an existing personal draft: create one so the
+        // suggestion links to it (the approve path writes published_song_id
+        // back to the personal row).
+        let pid = personalId
+        if (!pid && canDirectWrite(role)) {
+          const created = await createPersonalSong(supabase, formToSongRow(canonicalizeForm(payload)))
+          pid = created.id
+        }
+        if (pid) {
+          // Personal draft path: write the latest form into the draft, submit
+          // the suggestion, mark the draft as submitted, then leave the editor.
+          await updatePersonalSong(supabase, pid, formToSongRow(canonicalizeForm(payload)))
+          await submitSongSuggestion(supabase, {
+            type: isNew ? 'addition' : 'edit',
+            payload,
+            songId: song?.id || null,
+            personalSongId: pid,
+          })
+          await updatePersonalSong(supabase, pid, { status: 'submitted' })
+          await writeAuditLog('suggestion_submitted', song?.id, song?.slug, formValues.title, payload, null)
+          showToast(t('submittedForReview'))
+          setIsDirty(false)
+          setSavedFormValues(formValues)
+          navigate('/songs')
+        } else {
+          // Non-editor without a draft: legacy path (no personal_songs row to
+          // link to). Submit a bare suggestion.
           await submitSongSuggestion(supabase, {
             type: isNew ? 'addition' : 'edit',
             payload,
             songId: song?.id || null,
             personalSongId: null,
           })
-        } catch (err) {
-          showToast(`${t('suggestionSubmitError')}: ${err.message}`); setSaving(false); return
+          await writeAuditLog('suggestion_submitted', song?.id, song?.slug, formValues.title, payload, null)
+          showToast(t('suggestionSubmitted'))
+          setIsDirty(false)
+          setSavedFormValues(formValues)
         }
-        await writeAuditLog('suggestion_submitted', song?.id, song?.slug, formValues.title, payload, null)
-        showToast(t('suggestionSubmitted'))
-        setIsDirty(false)
-        setSavedFormValues(formValues)
-
-      } else {
-        // Derive slug silently
-        const slug = await deriveUniqueSlug(payload.title, song?.id)
-
-        const upsertPayload = {
-          title: payload.title,
-          artist: payload.artist || null,
-          default_key: payload.default_key || null,
-          tempo: payload.tempo || null,
-          time_signature: payload.time_signature || null,
-          country: payload.country || null,
-          youtube_id: payload.youtube_id || null,
-          language: payload.language || null,
-          pptx_url: payload.pptx_url || null,
-          slug,
-          tags: payload.tags || [],
-          chordpro_content: payload.chordpro_content || '',
-          is_deleted: false,
-          updated_at: new Date().toISOString(),
-        }
-        if (isNew) upsertPayload.created_at = new Date().toISOString()
-
-        const { data: savedSong, error } = await supabase
-          .from('songs')
-          .upsert(upsertPayload, { onConflict: 'slug' })
-          .select()
-          .single()
-
-        if (error) { showToast(`Error saving song: ${error.message}`); setSaving(false); return }
-
-        await writeAuditLog('direct_save', savedSong.id, savedSong.slug, savedSong.title, upsertPayload, null)
-        showToast('Song saved')
-        setIsDirty(false)
-        setSong(savedSong)
-        setSavedFormValues(formValues)
-
-        if (isNew && savedSong.slug) {
-          navigate(`/portal/editor/${savedSong.slug}`, { replace: true })
-        }
+      } catch (err) {
+        showToast(`${t('suggestionSubmitError')}: ${err.message}`)
+        setSaving(false)
+        return
       }
 
     } catch (err) {
@@ -615,7 +609,9 @@ function DesktopEditorPage() {
     showToast(t('suggestionLoaded'))
   }
 
-  const saveLabel = personalId ? t('saveDraft') : (canDirectWrite(role) ? t('save') : t('submitForReview'))
+  // Save button: "Guardar borrador" when editing an existing personal draft;
+  // "Enviar para revisión" for all other cases (new song or editor+ saving without draft).
+  const saveLabel = personalId ? t('saveDraft') : t('submitForReview')
   const deleteLabel = isAtLeast('admin') ? 'Delete Song' : 'Request Deletion'
 
   return (
@@ -776,6 +772,15 @@ function DesktopEditorPage() {
             <SuggestionReviewPanel
               songId={song.id}
               currentSong={song}
+              onApproved={() => {}}
+              onRejected={() => {}}
+              onTouchUp={handleTouchUp}
+            />
+          )}
+
+          {/* Pending new songs review panel (Editor+, when no song is being edited) */}
+          {!song && !personalId && isAtLeast('editor') && (
+            <PendingAdditionSuggestionsPanel
               onApproved={() => {}}
               onRejected={() => {}}
               onTouchUp={handleTouchUp}
