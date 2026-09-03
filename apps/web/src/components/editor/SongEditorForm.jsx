@@ -57,15 +57,9 @@ function PptxWidget({ value, onChange, onPptxSaved, disabled, slug, title }) {
   const canReplace = isAtLeast('editor')
   const canDelete = can('deletePptx') // admin+
 
-  // Configuration warning when worker URL is missing
+  // Don't render if worker URL is not configured
   if (!PPTX_WORKER_URL) {
-    return (
-      <div className="gc-pptx-widget">
-        <p className="gc-pptx-widget__config-warning">
-          PPTX upload is not configured. Set <code>VITE_PPTX_WORKER_URL</code> in your environment.
-        </p>
-      </div>
-    )
+    return null
   }
 
   // --- File exists state ---

@@ -53,6 +53,25 @@ export async function fetchSuggestionsForSong(client, songId) {
 }
 
 /**
+ * Fetch pending "addition" suggestions (new songs) with no associated song_id.
+ * Used by editors to review new songs pending approval. RLS restricts this to
+ * the suggester or editor+.
+ *
+ * @param {import('@supabase/supabase-js').SupabaseClient} client
+ */
+export async function fetchPendingAdditionSuggestions(client) {
+  const { data, error } = await client
+    .from('song_suggestions')
+    .select('*, users!suggested_by(display_name)')
+    .eq('type', 'addition')
+    .is('song_id', null)
+    .eq('status', 'pending')
+    .order('created_at', { ascending: true })
+  if (error) throw error
+  return data || []
+}
+
+/**
  * Approve or reject a suggestion via the atomic, editor-gated RPC. On approve
  * this publishes into `songs` (or soft-deletes for a deletion) and flips the
  * linked draft to published; on reject it records the reason and reopens the

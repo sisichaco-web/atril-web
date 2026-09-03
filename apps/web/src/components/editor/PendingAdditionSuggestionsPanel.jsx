@@ -1,10 +1,9 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { supabase } from '../../lib/supabase'
-import { reviewSongSuggestion } from '@gracechords/core'
+import { reviewSongSuggestion, fetchPendingAdditionSuggestions } from '@gracechords/core'
 import { useRole } from '../../hooks/useRole'
 import { invalidateSongsCache } from '../../hooks/useSongs'
-
 import { showToast } from '../../utils/app/toast'
 
 function formatDate(str) {
@@ -37,14 +36,6 @@ function MetadataDiff({ oldPayload, newPayload }) {
       {diffs.map(f => (
         <div key={f} className="gc-suggestion-card__diff-row">
           <span className="gc-suggestion-card__diff-key">{f}</span>
-          {oldPayload && (
-            <>
-              <span className="gc-suggestion-card__diff-old">
-                {JSON.stringify(oldPayload[f] ?? '')}
-              </span>
-              <span className="gc-suggestion-card__diff-arrow">→</span>
-            </>
-          )}
           <span className="gc-suggestion-card__diff-new">
             {JSON.stringify(newPayload?.[f] ?? '')}
           </span>
@@ -54,29 +45,14 @@ function MetadataDiff({ oldPayload, newPayload }) {
   )
 }
 
-function ContentDiff({ oldContent, newContent }) {
+function ContentDiff({ newContent }) {
   const { t } = useTranslation('editor')
-  if (!oldContent && !newContent) return null
+  if (!newContent) return null
 
-  const oldLines = (oldContent || '').split('\n')
   const newLines = (newContent || '').split('\n')
 
-  // Simple line-by-line diff: mark added vs removed
-  const maxLen = Math.max(oldLines.length, newLines.length)
-  const rows = []
-  for (let i = 0; i < maxLen; i++) {
-    const o = oldLines[i]
-    const n = newLines[i]
-    if (o === n) {
-      rows.push({ type: 'same', text: n })
-    } else {
-      if (o !== undefined) rows.push({ type: 'removed', text: o })
-      if (n !== undefined) rows.push({ type: 'added', text: n })
-    }
-  }
-
-  const hasDiff = rows.some(r => r.type !== 'same')
-  if (!hasDiff) return null
+  // Show all lines as added
+  const rows = newLines.map(line => ({ type: 'added', text: line }))
 
   return (
     <div className="gc-suggestion-card__diff-section">
@@ -85,14 +61,9 @@ function ContentDiff({ oldContent, newContent }) {
         {rows.map((row, i) => (
           <div
             key={i}
-            className={
-              row.type === 'added' ? 'gc-suggestion-card__diff-line--added' :
-              row.type === 'removed' ? 'gc-suggestion-card__diff-line--removed' :
-              undefined
-            }
+            className="gc-suggestion-card__diff-line--added"
           >
-            {row.type === 'added' ? '+ ' : row.type === 'removed' ? '- ' : '  '}
-            {row.text}
+            + {row.text}
           </div>
         ))}
       </div>
@@ -132,15 +103,11 @@ function RejectionForm({ onSubmit, onCancel }) {
   )
 }
 
-function SuggestionCard({ suggestion, currentSong, onApproved, onRejected, onTouchUp, canDirectDelete }) {
+function AdditionSuggestionCard({ suggestion, onApproved, onRejected, onTouchUp }) {
   const { t } = useTranslation('editor')
   const [rejecting, setRejecting] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  // Approve/reject go through the SECURITY DEFINER RPC: it publishes into
-  // `songs` (or soft-deletes), flips the linked draft, records the reason, and
-  // writes the audit row — atomically, and with the cross-owner writes the
-  // client can't do under RLS.
   async function handleApprove() {
     if (loading) return
     setLoading(true)
@@ -170,27 +137,19 @@ function SuggestionCard({ suggestion, currentSong, onApproved, onRejected, onTou
     setRejecting(false)
   }
 
-  const isDeletion = suggestion.type === 'deletion'
-
   return (
-    <div className={`gc-suggestion-card${isDeletion ? ' gc-suggestion-card--deletion' : ''}`}>
-      <div className={`gc-suggestion-card__header${isDeletion ? ' gc-suggestion-card__header--deletion' : ''}`}>
+    <div className="gc-suggestion-card gc-suggestion-card--addition">
+      <div className="gc-suggestion-card__header">
         <span className="gc-suggestion-card__proposer">
           {suggestion.users?.display_name || t('unknownUser')}
         </span>
         <span className="gc-suggestion-card__meta">{formatDate(suggestion.created_at)}</span>
-        <span className={`gc-suggestion-card__badge gc-suggestion-card__badge--${suggestion.type}`}>
-          {suggestion.type}
+        <span className="gc-suggestion-card__badge gc-suggestion-card__badge--addition">
+          {t('newSong')}
         </span>
       </div>
 
       <div className="gc-suggestion-card__body">
-        {isDeletion && (
-          <div className="gc-suggestion-card__deletion-warning">
-            ⚠ {t('deletionWarning')}
-          </div>
-        )}
-
         {suggestion.proposer_note && (
           <div className="gc-suggestion-card__note">
             "{suggestion.proposer_note}"
@@ -198,26 +157,23 @@ function SuggestionCard({ suggestion, currentSong, onApproved, onRejected, onTou
         )}
 
         <MetadataDiff
-          oldPayload={currentSong}
+          oldPayload={null}
           newPayload={suggestion.payload}
         />
         <ContentDiff
-          oldContent={currentSong?.chordpro_content}
           newContent={suggestion.payload?.chordpro_content}
         />
       </div>
 
       <div className="gc-suggestion-card__actions">
-        {(!isDeletion || canDirectDelete) && (
-          <button
-            type="button"
-            className="gc-btn gc-btn--primary gc-btn--sm"
-            onClick={handleApprove}
-            disabled={loading}
-          >
-            {t('approve')}
-          </button>
-        )}
+        <button
+          type="button"
+          className="gc-btn gc-btn--primary gc-btn--sm"
+          onClick={handleApprove}
+          disabled={loading}
+        >
+          {t('approve')}
+        </button>
         <button
           type="button"
           className="gc-btn gc-btn--secondary gc-btn--sm"
@@ -246,36 +202,39 @@ function SuggestionCard({ suggestion, currentSong, onApproved, onRejected, onTou
   )
 }
 
-export default function SuggestionReviewPanel({ songId, currentSong, onApproved, onRejected, onTouchUp }) {
+export default function PendingAdditionSuggestionsPanel({ onApproved, onRejected, onTouchUp }) {
   const { t } = useTranslation('editor')
   const { isAtLeast } = useRole()
   const [suggestions, setSuggestions] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
-  const fetchSuggestions = useCallback(async () => {
-    if (!songId || !isAtLeast('editor')) return
+  useEffect(() => {
+    if (!isAtLeast('editor')) return
+
+    let cancelled = false
     setLoading(true)
     setError(null)
 
-    const { data, error: fetchError } = await supabase
-      .from('song_suggestions')
-      .select('*, users!suggested_by(display_name)')
-      .eq('song_id', songId)
-      .eq('status', 'pending')
-      .order('created_at', { ascending: true })
+    ;(async () => {
+      try {
+        const data = await fetchPendingAdditionSuggestions(supabase)
+        if (!cancelled) {
+          setSuggestions(data || [])
+        }
+      } catch (fetchError) {
+        if (!cancelled) {
+          setError(fetchError.message)
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false)
+        }
+      }
+    })()
 
-    if (fetchError) {
-      setError(fetchError.message)
-    } else {
-      setSuggestions(data || [])
-    }
-    setLoading(false)
-  }, [songId, isAtLeast])
-
-  useEffect(() => {
-    fetchSuggestions()
-  }, [fetchSuggestions])
+    return () => { cancelled = true }
+  }, [isAtLeast])
 
   if (!isAtLeast('editor')) return null
 
@@ -289,11 +248,9 @@ export default function SuggestionReviewPanel({ songId, currentSong, onApproved,
     if (onRejected) onRejected(id)
   }
 
-  const canDirectDelete = isAtLeast('admin')
-
   return (
     <div className="gc-suggestion-review gc-portal-section">
-      <h2>{t('pendingSuggestions')}</h2>
+      <h2>{t('pendingNewSongs')}</h2>
 
       {error && (
         <p style={{ color: 'var(--gc-danger)' }}>{t('suggestionsLoadError')}: {error}</p>
@@ -302,20 +259,22 @@ export default function SuggestionReviewPanel({ songId, currentSong, onApproved,
       {loading && <p className="gc-suggestion-review__empty">{t('loadingSuggestions')}</p>}
 
       {!loading && !error && suggestions.length === 0 && (
-        <p className="gc-suggestion-review__empty">{t('noSuggestions')}</p>
+        <p className="gc-suggestion-review__empty">{t('noNewSuggestions')}</p>
       )}
 
-      {suggestions.map(s => (
-        <SuggestionCard
-          key={s.id}
-          suggestion={s}
-          currentSong={currentSong}
-          onApproved={handleApproved}
-          onRejected={handleRejected}
-          onTouchUp={onTouchUp}
-          canDirectDelete={canDirectDelete}
-        />
-      ))}
+      {!loading && !error && suggestions.length > 0 && (
+        <div className="gc-suggestion-review__list">
+          {suggestions.map(suggestion => (
+            <AdditionSuggestionCard
+              key={suggestion.id}
+              suggestion={suggestion}
+              onApproved={handleApproved}
+              onRejected={handleRejected}
+              onTouchUp={onTouchUp}
+            />
+          ))}
+        </div>
+      )}
     </div>
   )
 }

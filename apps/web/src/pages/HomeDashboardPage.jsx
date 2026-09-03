@@ -139,7 +139,7 @@ export default function HomeDashboard(){
   }
 
   function handleContribute(){
-    try { window.open('https://github.com/rwm6857/Atril', '_blank', 'noopener,noreferrer') } catch {}
+    try { window.open('https://github.com/sisichaco-web/atril-web', '_blank', 'noopener,noreferrer') } catch {}
   }
 
   function findExactMatch(term){

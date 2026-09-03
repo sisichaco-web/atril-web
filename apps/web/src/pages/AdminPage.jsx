@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
+import { useTranslation } from 'react-i18next'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../hooks/useAuth'
 import { showToast } from '../utils/app/toast'
@@ -42,15 +43,16 @@ function formatAccountAge(createdAt) {
 
 // Role matrix data
 const MATRIX_ROWS = [
-  { label: 'Basic access & personal features', user: true,  editor: true,  admin: true,             owner: true          },
-  { label: 'Create personal songs & submit for review', user: true, editor: true, admin: true,      owner: true          },
-  { label: 'Manage song content',              user: false, editor: true,  admin: true,             owner: true          },
-  { label: 'Delete content',                   user: false, editor: false, admin: true,             owner: true          },
-  { label: 'Promote users',                    user: false, editor: false, admin: 'Up to Editor',   owner: 'Up to Admin' },
-  { label: 'Manage user accounts',             user: false, editor: false, admin: false,            owner: true          },
+  { labelKey: 'matrixBasicAccess',       user: true,  editor: true,  admin: true,             owner: true          },
+  { labelKey: 'matrixCreateSongs',       user: true,  editor: true,  admin: true,             owner: true          },
+  { labelKey: 'matrixManageContent',     user: false, editor: true,  admin: true,             owner: true          },
+  { labelKey: 'matrixDeleteContent',     user: false, editor: false, admin: true,             owner: true          },
+  { labelKey: 'matrixPromoteUsers',      user: false, editor: false, admin: 'upToEditor',      owner: 'upToAdmin'   },
+  { labelKey: 'matrixManageAccounts',    user: false, editor: false, admin: false,            owner: true          },
 ]
 
 export default function AdminPage() {
+  const { t } = useTranslation('admin')
   const { session, isOwner } = useAuth()
   const [users, setUsers] = useState([])
   const [usersLoading, setUsersLoading] = useState(true)
@@ -63,18 +65,15 @@ export default function AdminPage() {
 
   const loadUsers = useCallback(async () => {
     setUsersLoading(true)
-    const { data, error } = await supabase
-      .from('users')
-      .select('id, role, account_created_at, display_name')
-      .order('account_created_at', { ascending: false })
+    const { data, error } = await supabase.rpc('get_users_with_email')
     if (error) {
-      showToast('Failed to load users.')
+      showToast(t('loadUsersFailed'))
       console.error('[AdminPage] loadUsers:', error)
     } else {
       setUsers(data || [])
     }
     setUsersLoading(false)
-  }, [])
+  }, [t])
 
   useEffect(() => {
     loadUsers().then(() => setLastUpdated(new Date()))
@@ -134,11 +133,11 @@ export default function AdminPage() {
 
   return (
     <div className="gc-portal-page container">
-      <Helmet><title>Admin Portal – Atril</title></Helmet>
+      <Helmet><title>{t('adminPortal')}</title></Helmet>
 
-      <h1>Admin Portal</h1>
+      <h1>{t('adminPortal')}</h1>
       <p className="gc-portal-page__subtitle">
-        Manage users and roles.
+        {t('adminPortalSubtitle')}
       </p>
       <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--gc-space-3)', marginBottom: 'var(--gc-space-4)' }}>
         <Button
@@ -146,20 +145,20 @@ export default function AdminPage() {
           variant="secondary"
           loading={refreshing}
           onClick={handleRefresh}
-          aria-label="Refresh users"
+          aria-label={t('refreshAriaLabel')}
         >
-          Refresh
+          {t('refresh')}
         </Button>
         {lastUpdated && (
           <span style={{ color: 'var(--gc-text-secondary)', fontSize: 'var(--gc-text-sm)' }}>
-            Updated {formatTime(lastUpdated)}
+            {t('updatedAt', { time: formatTime(lastUpdated) })}
           </span>
         )}
       </div>
 
       {/* ── 4a. User Management Table ─────────────────────────────── */}
       <section className="gc-portal-section">
-        <h2>User Management</h2>
+        <h2>{t('userManagement')}</h2>
         {usersLoading ? (
           <p className="gc-portal-empty">Loading users…</p>
         ) : users.length === 0 ? (
@@ -169,10 +168,11 @@ export default function AdminPage() {
             <table className="gc-user-table">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Role</th>
-                  <th className="gc-user-table__col--desktop">Account Age</th>
-                  <th className="gc-user-table__col--desktop">Actions</th>
+                  <th>{t('name')}</th>
+                  <th className="gc-user-table__col--desktop">{t('email')}</th>
+                  <th>{t('role')}</th>
+                  <th className="gc-user-table__col--desktop">{t('accountAge')}</th>
+                  <th className="gc-user-table__col--desktop">{t('actions')}</th>
                   <th className="gc-user-table__col--mobile" aria-hidden="true"></th>
                 </tr>
               </thead>
@@ -224,6 +224,9 @@ export default function AdminPage() {
                         onClick={() => setExpandedUserId(isExpanded ? null : user.id)}
                       >
                         <td>{user.display_name || <span style={{ color: 'var(--gc-text-tertiary)' }}>—</span>}</td>
+                        <td className="gc-user-table__col--desktop" style={{ fontSize: 'var(--gc-text-sm)', color: 'var(--gc-text-secondary)' }}>
+                          {user.email || <span style={{ color: 'var(--gc-text-tertiary)' }}>—</span>}
+                        </td>
                         <td><RolePill role={user.role || 'user'} /></td>
                         <td className="gc-user-table__col--desktop">
                           <span className="gc-account-age">
@@ -238,12 +241,20 @@ export default function AdminPage() {
                         </td>
                       </tr>
                       <tr className={`gc-user-table__expand-row${isExpanded ? ' gc-user-table__expand-row--open' : ''}`}>
-                        <td colSpan={5}>
+                        <td colSpan={6}>
                           <div className="gc-user-table__expand-panel">
-                            <span className="gc-account-age">
+                            <div>
+                              <span style={{ fontWeight: '500', marginRight: 'var(--gc-space-2)' }}>Email:</span>
+                              <span style={{ color: 'var(--gc-text-secondary)', fontSize: 'var(--gc-text-sm)' }}>
+                                {user.email || '—'}
+                              </span>
+                            </div>
+                            <span className="gc-account-age" style={{ marginTop: 'var(--gc-space-2)' }}>
                               {formatAccountAge(user.account_created_at)}
                             </span>
-                            {actionButtons}
+                            <div style={{ marginTop: 'var(--gc-space-3)' }}>
+                              {actionButtons}
+                            </div>
                           </div>
                         </td>
                       </tr>
@@ -258,12 +269,12 @@ export default function AdminPage() {
 
       {/* ── 4b. Role & Privilege Matrix ───────────────────────────── */}
       <section className="gc-portal-section">
-        <h2>Role & Privilege Matrix</h2>
+        <h2>{t('rolePrivilegeMatrix')}</h2>
         <div className="gc-matrix-wrap">
           <table className="gc-matrix-table">
             <thead>
               <tr>
-                <th>Capability</th>
+                <th>{t('capability')}</th>
                 <th><RolePill role="user" /></th>
                 <th><RolePill role="editor" /></th>
                 <th><RolePill role="admin" /></th>
@@ -276,8 +287,8 @@ export default function AdminPage() {
                   ? <span className="gc-matrix-yes">{val}</span>
                   : <span className={val ? 'gc-matrix-yes' : 'gc-matrix-no'}>{val ? '✓' : '—'}</span>
                 return (
-                  <tr key={row.label}>
-                    <td>{row.label}</td>
+                  <tr key={row.labelKey}>
+                    <td>{t(row.labelKey)}</td>
                     <td>{cell(row.user)}</td>
                     <td>{cell(row.editor)}</td>
                     <td>{cell(row.admin)}</td>
