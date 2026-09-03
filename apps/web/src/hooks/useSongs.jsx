@@ -139,3 +139,14 @@ export function useSongs() {
 
   return { songs, loading }
 }
+
+/**
+ * Drop the module-level cache so the next useSongs() mount refetches from
+ * Supabase. Called by editor panels after approving a song suggestion so the
+ * catalog reflects the new published row without a hard refresh.
+ */
+export function invalidateSongsCache() {
+  _cache = null
+  _promise = null
+  _cacheTime = 0
+}
